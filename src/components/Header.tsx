@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import DesktopMenu from "./navigation/DesktopMenu";
 import MobileMenu from "./navigation/MobileMenu";
+import { Button } from "./ui/button";
 
 type HeaderProps = {
     variant?: "transparent" | "white";
@@ -48,22 +49,29 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
     return (
         <header>
             {/* Desktop Header */}
-            <div className={`${positionCls} z-999 hidden w-full px-6 py-4 transition-transform duration-300 ease-in-out lg:block ${desktopBg} ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
+            <div className={`${positionCls} z-999 hidden w-full  px-6 py-4 transition-transform duration-300 ease-in-out lg:block ${desktopBg} ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
                 <div className="mx-auto flex items-center justify-between">
                     <Link href="/" aria-label="Go to home">
                         <div className="flex items-center">
                             {/* <Image src={logo} alt="Algorify Logo" className="h-auto w-38" /> */}
-                            Job Portal
+                            <h2 className="text-2xl font-bold text-blue-700">Career Portal</h2>
                         </div>
                     </Link>
 
                     <DesktopMenu />
 
-                    <Link href="/hire-us" aria-label="Hire Us">
-                        {/* <CustomButton className="px-6" variant="transparent" showArrow={false}>
-                            Hire Us
-                        </CustomButton> */}
-                    </Link>
+                    <div className="pl-6 flex items-center space-x-4">
+                        <Button className="rounded-full text-white px-6 py-2 border-2 border-blue-700 bg-blue-700" variant="default">
+                            <Link href="/login" aria-label="Login">
+                                Login
+                            </Link>
+                        </Button>
+                        <Button className="rounded-full text-white px-6 py-2 border-2" variant="outline">
+                            <Link href="/register" aria-label="Login">
+                                Register
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
 

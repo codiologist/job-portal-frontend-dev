@@ -3,8 +3,8 @@ import JobCard from "@/app/features/job/job-card";
 const JobPage = () => {
     return (
         <div className="">
-            <section className="relative table w-full py-36 bg-[url('/bg.jpg')] bg-top bg-no-repeat bg-cover">
-                <div className="absolute inset-0 bg-emerald-900/90"></div>
+            <section className="relative table w-full py-36 bg-[url('/job-listing-bg.jpg')] bg-top bg-no-repeat bg-cover">
+                <div className="absolute inset-0 bg-blue-700/70"></div>
                 <div className="container relative">
                     <div className="grid grid-cols-1 text-center mt-10">
                         <h3 className="md:text-5xl text-2xl md:leading-snug tracking-wide leading-snug font-bold uppercase text-white">Open Positions</h3>

@@ -2,17 +2,12 @@
 "use client";
 
 import api from "@/lib/axiosInstance";
+import { TGetMyProfileResponse } from "@/types/profile.types";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-interface User {
-    id: string;
-    name: string;
-    email: string;
-}
-
 interface AuthContextType {
-    user: User | null;
+    user: TGetMyProfileResponse | null;
     loading: boolean;
     login: (email: string, password: string) => Promise<void>;
     signup: (fullName: string, email: string, password: string) => Promise<any>;
@@ -24,17 +19,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<TGetMyProfileResponse | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     // Check if user is already logged in on mount
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const res = await api.get("/user/me", { withCredentials: true });
-                setUser(res.data.data);
+                // console.log("context", res.data);
+                setUser(res.data as TGetMyProfileResponse);
             } catch (err) {
-                setUser(null);
             } finally {
                 setLoading(false);
             }

@@ -7,8 +7,7 @@ const RegistrationPage = () => {
             <div className="flex w-full flex-wrap">
                 <div className="flex w-full flex-col md:w-1/2 lg:w-1/3 ">
                     <div className="my-auto flex flex-col justify-center px-6 pt-8 sm:px-24 md:justify-start md:px-8 md:pt-0 lg:px-12">
-                        <p className="text-left text-4xl font-bold">Start journey with us</p>
-                        <p className="text-left mt-4 text-2xl">Create your account</p>
+                        <p className="text-left text-4xl font-bold text-blue-700">Start journey with us</p>
 
                         <RegistrationForm />
 

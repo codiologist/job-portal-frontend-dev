@@ -1,11 +1,10 @@
 "use client";
 
-import { Form } from "@/components/ui/form";
+import { Form, FormControl, FormLabel } from "@/components/ui/form";
 
 import { Button } from "@/components/ui/button";
 import { FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 import { useAuth } from "@/context/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 // import { toast } from "sonner";
+import { Lock, Mail } from "lucide-react";
 import { toast } from "react-toastify";
 import * as z from "zod";
 import GoogleBtn from "./GoogleBtn";
@@ -60,20 +60,44 @@ const LoginForm = () => {
     return (
         <div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    {/* Email */}
                     <FormField
                         control={form.control}
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <Label htmlFor="email">Email</Label>
-                                <Input {...field} id="email" placeholder="you@example.com" type="email" disabled={isLoading} />
+                                <FormLabel>Email Address</FormLabel>
+                                <FormControl>
+                                    <div className="relative">
+                                        <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                                        <Input {...field} id="email" placeholder="you@example.com" type="email" disabled={isLoading} className="pl-10 rounded-sm" />
+                                    </div>
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
 
+                    {/* Password */}
                     <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                                        <Input {...field} id="password" placeholder="Enter your password" type="password" disabled={isLoading} className="pl-10 rounded-sm" />
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    {/* <FormField
                         control={form.control}
                         name="password"
                         render={({ field }) => (
@@ -83,7 +107,7 @@ const LoginForm = () => {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    /> */}
 
                     <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? "Signing in..." : "Sign In"}

@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
@@ -25,11 +25,16 @@ const RegistrationForm = () => {
     const form = useForm<SignupInput>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
-            name: "Firoj Ahmed",
-            email: "robin.promoteur@gmail.com",
-            password: "123456",
-            confirmPassword: "123456",
-            terms: true,
+            // name: "Firoj Ahmed",
+            // email: "robin.promoteur@gmail.com",
+            // password: "123456",
+            // confirmPassword: "123456",
+            // terms: true,
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            terms: false,
         },
     });
 
@@ -50,9 +55,9 @@ const RegistrationForm = () => {
         }
     };
     return (
-        <div>
+        <div className="mt-14">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     {/* Full Name */}
                     <FormField
                         control={form.control}
@@ -63,7 +68,7 @@ const RegistrationForm = () => {
                                 <FormControl>
                                     <div className="relative">
                                         <User className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                                        <Input {...field} className="pl-10" placeholder="John Doe" />
+                                        <Input {...field} className="pl-10 rounded-sm" placeholder="Enter your full name" />
                                     </div>
                                 </FormControl>
                                 <FormMessage />
@@ -81,7 +86,7 @@ const RegistrationForm = () => {
                                 <FormControl>
                                     <div className="relative">
                                         <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                                        <Input {...field} className="pl-10" placeholder="you@email.com" />
+                                        <Input {...field} className="pl-10 rounded-sm" placeholder="email@mail.com" />
                                     </div>
                                 </FormControl>
                                 <FormMessage />
@@ -99,7 +104,7 @@ const RegistrationForm = () => {
                                 <FormControl>
                                     <div className="relative">
                                         <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                                        <Input {...field} type="password" className="pl-10" />
+                                        <Input {...field} type="password" className="pl-10 rounded-sm" placeholder="Enter your password" />
                                     </div>
                                 </FormControl>
                                 <FormMessage />
@@ -117,7 +122,7 @@ const RegistrationForm = () => {
                                 <FormControl>
                                     <div className="relative">
                                         <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                                        <Input {...field} type="password" className="pl-10" />
+                                        <Input {...field} type="password" className="pl-10 rounded-sm" placeholder="Confirm your password" />
                                     </div>
                                 </FormControl>
                                 <FormMessage />
@@ -150,9 +155,8 @@ const RegistrationForm = () => {
                         )}
                     />
 
-                    <Button disabled={loading} className="w-full">
+                    <Button disabled={loading} className="w-full mt-4">
                         {loading ? "Creating..." : "Create Account"}
-                        <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </form>
             </Form>
