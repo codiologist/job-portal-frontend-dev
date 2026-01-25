@@ -16,7 +16,7 @@ const TopNavBar = () => {
     const handleLogout = async () => {
         try {
             await logout();
-            router.push("/");
+            router.push("/login");
         } catch (error) {
             console.error("Logout failed:", error);
         }
