@@ -1,13 +1,13 @@
 import ProfileContentCard from "./profile-content-card";
 
-const CertificationDocumentsCard = () => {
+const AchievementCard = () => {
   return (
     <section className="mt-10">
-      <ProfileContentCard title="Certifications">
+      <ProfileContentCard title="Award &amp; Achievements">
         <p></p>
       </ProfileContentCard>
     </section>
   );
 };
 
-export default CertificationDocumentsCard;
+export default AchievementCard;

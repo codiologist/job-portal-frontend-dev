@@ -25,10 +25,10 @@ const IntroCard = () => {
               className="mx-auto h-38 w-full rounded-sm object-contain"
             />
           </div>
-          <div className="mt-26 xl:mt-2 xl:ml-36">
+          <div className="mt-26 xl:mt-1 xl:ml-36">
             <div className="flex flex-col xl:flex-row xl:items-start">
               <div className="w-full text-center xl:w-9/12 xl:text-left">
-                <h1 className="text-primary font-exo2 mb-1 text-3xl font-extrabold uppercase xl:text-4xl">
+                <h1 className="text-blue-water-700 font-exo2 mb-1 text-3xl font-extrabold uppercase xl:text-[40px]">
                   Firoj Ahmed
                 </h1>
                 <h2 className="mb-2 text-xl font-bold xl:text-2xl">

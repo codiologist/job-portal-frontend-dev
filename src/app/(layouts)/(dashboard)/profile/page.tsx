@@ -1,6 +1,6 @@
 import Image from "next/image";
+import AchievementCard from "./_components/achievement-card";
 import CareerObjectivCard from "./_components/career-objective-card";
-import CertificationDocumentsCard from "./_components/cerficates-documents-card";
 import ContactInfoCard from "./_components/contact-info-card";
 import EducationalInfoCard from "./_components/educational-info-card";
 import ExperienceInfoCard from "./_components/experience-info-card";
@@ -35,7 +35,7 @@ const ProfilePage = () => {
               <ExperienceInfoCard />
               <EducationalInfoCard />
               <SkillsInfoCard />
-              <CertificationDocumentsCard />
+              <AchievementCard />
               <OtherDocumentsCard />
             </div>
             <div className="w-full lg:w-4/12">
