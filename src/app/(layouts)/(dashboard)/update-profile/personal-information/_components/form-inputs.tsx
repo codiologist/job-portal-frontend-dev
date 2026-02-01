@@ -7,6 +7,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { forwardRef, ReactNode, useState } from "react";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import React from "react";
+import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/custom-calendar";
 import {
   Select,
   SelectContent,
@@ -15,28 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import type React from "react"; // Keep this if you have other React specific types
-import type { ReactNode } from "react";
-import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
-
-// New imports for Combobox
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
+import { CalendarIcon } from "lucide-react";
 
 // Common Text Input Component
 interface TextInputProps<T extends FieldValues> {
@@ -51,7 +44,7 @@ interface TextInputProps<T extends FieldValues> {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   maxLength?: number;
   minLength?: number;
-  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  errorMessage?: string;
 }
 export const TextInput = <T extends FieldValues>({
   form,
@@ -65,7 +58,7 @@ export const TextInput = <T extends FieldValues>({
   onChange,
   maxLength,
   minLength,
-  inputMode,
+  errorMessage,
 }: TextInputProps<T>) => {
   return (
     <FormField
@@ -80,7 +73,7 @@ export const TextInput = <T extends FieldValues>({
             <div className="relative">
               <Input
                 className={cn(
-                  "h-10 border-[#D0D5DD] bg-white disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 max-sm:h-11",
+                  "h-10 border-[#D0D5DD] bg-white max-sm:h-11",
                   icon && "pr-12",
                 )}
                 type={type}
@@ -93,15 +86,19 @@ export const TextInput = <T extends FieldValues>({
                 }}
                 maxLength={maxLength}
                 minLength={minLength}
-                inputMode={inputMode} // Add this line
               />
               {icon && (
-                <div className="absolute right-3 top-0 flex h-full items-center justify-center text-tertiary-primary">
+                <div className="text-tertiary-primary absolute top-0 right-3 flex h-full items-center justify-center">
                   {icon}
                 </div>
               )}
             </div>
           </FormControl>
+          {errorMessage && (
+            <p className="text-destructive text-[0.8rem] font-medium">
+              {errorMessage}
+            </p>
+          )}
           <FormMessage />
         </FormItem>
       )}
@@ -111,8 +108,8 @@ export const TextInput = <T extends FieldValues>({
 
 // Common Textarea Component
 interface TextAreaInputProps {
-  form: UseFormReturn<any>; // Use UseFormReturn<any> if T is not needed here
-  name: string; // Or Path<T> if you want to make it generic
+  form: UseFormReturn<any>;
+  name: string;
   label: string;
   placeholder?: string;
   icon?: ReactNode;
@@ -140,14 +137,14 @@ export const TextAreaInput = ({
             <div className="relative">
               <Textarea
                 className={cn(
-                  "placeholder:text-primary-gray h-20 rounded-none border-[#D0D5DD] bg-white disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 lg:h-28",
+                  "placeholder:text-primary-gray h-20 border-[#D0D5DD] bg-white disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 lg:h-28",
                   icon && "pr-12",
                 )}
                 placeholder={placeholder}
                 {...field}
               />
               {icon && (
-                <div className="text-primary-gray absolute right-3 top-0 flex h-full items-center justify-center">
+                <div className="text-primary-gray absolute top-0 right-3 flex h-full items-center justify-center">
                   {icon}
                 </div>
               )}
@@ -160,9 +157,8 @@ export const TextAreaInput = ({
   );
 };
 
-// Common Select Component
-export interface SelectOption {
-  // Exporting for use in other files
+// Common Seelct Component
+interface SelectOption {
   label: string;
   value: string | number;
 }
@@ -175,16 +171,18 @@ interface SelectInputProps {
   options: SelectOption[];
   required?: boolean;
   disabled?: boolean;
+  errorMessage?: string;
 }
 
 export const SelectInput = ({
   form,
   name,
   label,
-  placeholder = "Please select",
+  placeholder = "Please",
   options,
   required = false,
   disabled = false,
+  errorMessage,
 }: SelectInputProps) => {
   return (
     <FormField
@@ -196,12 +194,10 @@ export const SelectInput = ({
             {label} {required && <span className="text-destructive">*</span>}
           </FormLabel>
           <Select
-            value={
-              field.value !== undefined && field.value !== null
-                ? String(field.value)
-                : ""
-            }
+            // onValueChange={field.onChange}
+            value={field.value !== undefined ? String(field.value) : ""}
             onValueChange={(selectedValue) => {
+              // Find the original option
               const matchedOption = options.find(
                 (opt) => String(opt.value) === selectedValue,
               );
@@ -210,17 +206,12 @@ export const SelectInput = ({
                   shouldValidate: true,
                   shouldDirty: true,
                 });
-              } else {
-                form.setValue(name, undefined, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
               }
             }}
             disabled={disabled}
           >
             <FormControl>
-              <SelectTrigger className="relative h-10 border-[#D0D5DD] bg-white transition-all duration-300 max-sm:h-11 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:text-tertiary-primary/60 [&>svg]:opacity-100">
+              <SelectTrigger className="[&>svg]:text-tertiary-primary/60 [&[data-state=close]>svg]:bg-primary relative h-10 border-[#D0D5DD] bg-white transition-all duration-300 max-sm:h-11 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:opacity-100 [&[data-state=close]>svg]:-rotate-180 [&[data-state=close]>svg]:duration-300 [&[data-state=open]>svg]:rotate-180 [&[data-state=open]>svg]:duration-300">
                 <SelectValue
                   className="placeholder:!text-primary-gray"
                   placeholder={placeholder}
@@ -239,6 +230,11 @@ export const SelectInput = ({
               ))}
             </SelectContent>
           </Select>
+          {errorMessage && (
+            <p className="text-destructive text-[0.8rem] font-medium">
+              {errorMessage}
+            </p>
+          )}
           <FormMessage />
         </FormItem>
       )}
@@ -246,95 +242,136 @@ export const SelectInput = ({
   );
 };
 
-// Common Combobox Input Component
-interface ComboBoxInputProps {
+// Common File Upload Component
+interface FileInputProps {
   form: UseFormReturn<any>;
   name: string;
   label: string;
   placeholder?: string;
-  options: SelectOption[];
+  icon?: React.ReactNode;
   required?: boolean;
-  disabled?: boolean;
-  searchPlaceholder?: string;
-  notFoundText?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  errorMessage?: string;
 }
 
-export const ComboBoxInput = ({
-  form,
-  name,
-  label,
-  placeholder = "Select an option",
-  options,
-  required = false,
-  disabled = false,
-  searchPlaceholder = "Search...",
-  notFoundText = "No option found.",
-}: ComboBoxInputProps) => {
-  const [open, setOpen] = useState(false);
+export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
+  (
+    {
+      form,
+      name,
+      label,
+      placeholder = "Enter your text",
+      icon,
+      required = false,
+      onChange,
+      errorMessage,
+    },
+    _ref, // not used, to avoid ref conflict
+  ) => {
+    return (
+      <FormField
+        control={form.control}
+        name={name}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              {label} {required && <span className="text-destructive">*</span>}
+            </FormLabel>
+            <FormControl>
+              <div className="relative">
+                <Input
+                  ref={field.ref} // use react-hook-form's ref
+                  className={cn(
+                    "flex h-10 bg-white max-sm:h-11",
+                    icon && "pr-12",
+                  )}
+                  type="file"
+                  placeholder={placeholder}
+                  onChange={(e) => {
+                    field.onChange(e); // notify RHF
+                    onChange?.(e); // optional custom handler
+                  }}
+                />
 
+                {icon && (
+                  <div className="text-primary-gray absolute top-0 right-3 flex h-full items-center justify-center">
+                    {icon}
+                  </div>
+                )}
+              </div>
+            </FormControl>
+            {errorMessage && (
+              <p className="text-destructive text-[0.8rem] font-medium">
+                {errorMessage}
+              </p>
+            )}
+          </FormItem>
+        )}
+      />
+    );
+  },
+);
+FileInput.displayName = "FileInput";
+
+// Common DatePicker Component
+interface DatePickerProps {
+  form: UseFormReturn<any>;
+  label?: string;
+  name?: string;
+  required?: boolean;
+  placeholder?: string;
+}
+
+export const DatePickerInput = ({
+  form,
+  label = "Date",
+  name = "defaultDate",
+  placeholder = "Select a date",
+  required = false,
+}: DatePickerProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [date, setDate] = useState<Date | null>(null);
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="form-inoput-item combobox-input">
+        <FormItem className="form-inoput-item datepicker-input">
           <FormLabel>
             {label} {required && <span className="text-destructive">*</span>}
           </FormLabel>
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild disabled={disabled}>
+          <Popover open={isOpen} onOpenChange={setIsOpen}>
+            <PopoverTrigger asChild>
               <FormControl>
                 <Button
                   variant="outline"
-                  role="combobox"
-                  aria-expanded={open}
                   className={cn(
-                    "h-10 w-full justify-between border-[#D0D5DD] bg-white font-normal hover:bg-white max-sm:h-11",
+                    "h-10 w-full border-[#D0D5DD] bg-white pr-2 [&_svg]:size-6",
                     !field.value && "text-muted-foreground",
                   )}
                 >
-                  {field.value
-                    ? options.find(
-                        (option) =>
-                          String(option.value) === String(field.value),
-                      )?.label
-                    : placeholder}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  {field.value ? (
+                    format(field.value, "PPP")
+                  ) : (
+                    <span>{placeholder}</span>
+                  )}
+                  <CalendarIcon className="text-tertiary-primary/60 ml-auto" />
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-[--radix-popover-trigger-width] border-[#D0D5DD] p-0">
-              <Command>
-                <CommandInput placeholder={searchPlaceholder} />
-                <CommandList>
-                  <CommandEmpty>{notFoundText}</CommandEmpty>
-                  <CommandGroup>
-                    {options.map((option) => (
-                      <CommandItem
-                        key={String(option.value)}
-                        value={option.label} // Search by label
-                        onSelect={() => {
-                          form.setValue(name, option.value, {
-                            shouldValidate: true,
-                            shouldDirty: true,
-                          });
-                          setOpen(false);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            String(option.value) === String(field.value)
-                              ? "opacity-100"
-                              : "opacity-0",
-                          )}
-                        />
-                        {option.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                captionLayout="dropdown"
+                selected={field.value}
+                onSelect={async (selectedDate) => {
+                  field.onChange(selectedDate);
+                  await form.trigger(name);
+                  setDate(selectedDate!);
+                  setIsOpen(false);
+                }}
+                defaultMonth={field.value}
+              />
             </PopoverContent>
           </Popover>
           <FormMessage />
