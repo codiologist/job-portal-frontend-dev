@@ -34,7 +34,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const res = await api.get("/user/me", { withCredentials: true });
       // console.log("context", res.data);
       setUser(res.data as TGetMyProfileResponse);
-    } catch (err) {
+    } catch {
+      // User not authenticated - this is expected when not logged in
     } finally {
       setLoading(false);
     }
