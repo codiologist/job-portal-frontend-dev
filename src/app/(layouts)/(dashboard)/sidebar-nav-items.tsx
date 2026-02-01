@@ -4,13 +4,40 @@ import { cn } from "@/lib/utils";
 import { ChevronDownCircle } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const SidebarNavItems = () => {
   const pathname = usePathname();
+  
+  // Check if any submenu item is active for a given parent item
+  const isSubMenuActive = useMemo(() => {
+    const activeMap: Record<string, boolean> = {};
+    sidebarNavigationItems.forEach((item: any) => {
+      if (item.hasSubMenu && item.subMenuItems) {
+        activeMap[item.menu_name] = item.subMenuItems.some(
+          (subItem: any) => pathname === subItem.href || pathname.startsWith(subItem.href + "/")
+        );
+      }
+    });
+    return activeMap;
+  }, [pathname]);
+
+  // Initialize expanded sections - auto-expand if a child is active
   const [expandedSections, setExpandedSections] = useState<
     Record<string, boolean>
   >({});
+
+  // Auto-expand sections when their children are active
+  useEffect(() => {
+    const newExpandedSections: Record<string, boolean> = { ...expandedSections };
+    Object.entries(isSubMenuActive).forEach(([menuName, isActive]) => {
+      if (isActive) {
+        newExpandedSections[menuName] = true;
+      }
+    });
+    setExpandedSections(newExpandedSections);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, isSubMenuActive]);
 
   const toggleSection = (sectionName: string) => {
     setExpandedSections((prev) => ({
@@ -28,7 +55,12 @@ const SidebarNavItems = () => {
               <>
                 <button
                   onClick={() => toggleSection(item?.menu_name)}
-                  className="text-primary hover:bg-primary relative flex w-full cursor-pointer items-center px-4 py-2 text-base font-semibold transition-all duration-300 ease-out hover:translate-x-1 hover:text-white"
+                  className={cn(
+                    "relative flex w-full cursor-pointer items-center rounded-xs px-4 py-2 text-base font-semibold transition-all duration-300 ease-out hover:translate-x-1",
+                    isSubMenuActive[item.menu_name]
+                      ? "bg-primary text-white"
+                      : "text-primary hover:bg-primary hover:text-white"
+                  )}
                 >
                   {item.icon ? <item.icon size={18} className="mr-3" /> : null}
                   {item.menu_name}
@@ -58,18 +90,26 @@ const SidebarNavItems = () => {
                   )}
                 >
                   <div className="mt-2 ml-6 pb-4 pl-1">
-                    {item?.subMenuItems?.map((subItem: any) => (
-                      <Link
-                        key={subItem.menu_name}
-                        href={subItem.href}
-                        className="text-primary hover:bg-primary flex cursor-pointer items-center py-2 pl-4 font-semibold transition-all duration-300 ease-out hover:translate-x-1 hover:text-white"
-                      >
-                        {subItem.icon ? (
-                          <subItem.icon size={18} className="mr-3" />
-                        ) : null}
-                        <span>{subItem.menu_name}</span>
-                      </Link>
-                    ))}
+                    {item?.subMenuItems?.map((subItem: any) => {
+                      const isActive = pathname === subItem.href || pathname.startsWith(subItem.href + "/");
+                      return (
+                        <Link
+                          key={subItem.menu_name}
+                          href={subItem.href}
+                          className={cn(
+                            "flex cursor-pointer items-center rounded-xs py-2 pl-4 font-semibold transition-all duration-300 ease-out hover:translate-x-1",
+                            isActive
+                              ? "bg-primary text-white"
+                              : "text-primary hover:bg-primary hover:text-white"
+                          )}
+                        >
+                          {subItem.icon ? (
+                            <subItem.icon size={18} className="mr-3" />
+                          ) : null}
+                          <span>{subItem.menu_name}</span>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               </>
