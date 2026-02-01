@@ -1,21 +1,27 @@
 "use client";
-import { sidebarNavigationItems, SidebarNavigationItem, SidebarSubMenuItem } from "@/components/navigation/navigation-items";
+import {
+  SidebarNavigationItem,
+  sidebarNavigationItems,
+  SidebarSubMenuItem,
+} from "@/components/navigation/navigation-items";
 import { cn } from "@/lib/utils";
 import { ChevronDownCircle } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const SidebarNavItems = () => {
   const pathname = usePathname();
-  
+
   // Check if any submenu item is active for a given parent item
   const isSubMenuActive = useMemo(() => {
     const activeMap: Record<string, boolean> = {};
     sidebarNavigationItems.forEach((item: SidebarNavigationItem) => {
       if (item.hasSubMenu && item.subMenuItems) {
         activeMap[item.menu_name] = item.subMenuItems.some(
-          (subItem: SidebarSubMenuItem) => pathname === subItem.href || pathname.startsWith(subItem.href + "/")
+          (subItem: SidebarSubMenuItem) =>
+            pathname === subItem.href ||
+            pathname.startsWith(subItem.href + "/"),
         );
       }
     });
@@ -29,14 +35,16 @@ const SidebarNavItems = () => {
 
   // Auto-expand sections when their children are active
   useEffect(() => {
-    const newExpandedSections: Record<string, boolean> = { ...expandedSections };
+    const newExpandedSections: Record<string, boolean> = {
+      ...expandedSections,
+    };
     Object.entries(isSubMenuActive).forEach(([menuName, isActive]) => {
       if (isActive) {
         newExpandedSections[menuName] = true;
       }
     });
     setExpandedSections(newExpandedSections);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, isSubMenuActive]);
 
   const toggleSection = (sectionName: string) => {
@@ -58,11 +66,11 @@ const SidebarNavItems = () => {
                   className={cn(
                     "relative flex w-full cursor-pointer items-center rounded-xs px-4 py-2 text-base font-semibold transition-all duration-300 ease-out hover:translate-x-1",
                     isSubMenuActive[item.menu_name]
-                      ? "bg-primary text-white"
-                      : "text-primary hover:bg-primary hover:text-white"
+                      ? "bg-primary/10 text-primary"
+                      : "text-primary hover:bg-primary hover:text-white",
                   )}
                 >
-                  {item.icon ? <item.icon className="mr-3" /> : null}
+                  {item.icon ? <item.icon className="mr-3 size-4" /> : null}
                   {item.menu_name}
                   <div
                     className={`flex h-6 w-6 items-center justify-center transition-all duration-400 ease-in-out ${
@@ -89,9 +97,11 @@ const SidebarNavItems = () => {
                     expandedSections[item.menu_name] ? "max-h-200" : "max-h-0",
                   )}
                 >
-                  <div className="mt-2 ml-6 pb-4 pl-1">
+                  <div className="mt-2 ml-6 pt-2 pb-0 pl-1">
                     {item?.subMenuItems?.map((subItem: SidebarSubMenuItem) => {
-                      const isActive = pathname === subItem.href || pathname.startsWith(subItem.href + "/");
+                      const isActive =
+                        pathname === subItem.href ||
+                        pathname.startsWith(subItem.href + "/");
                       return (
                         <Link
                           key={subItem.menu_name}
@@ -99,12 +109,12 @@ const SidebarNavItems = () => {
                           className={cn(
                             "flex cursor-pointer items-center rounded-xs py-2 pl-4 font-semibold transition-all duration-300 ease-out hover:translate-x-1",
                             isActive
-                              ? "bg-primary text-white"
-                              : "text-primary hover:bg-primary hover:text-white"
+                              ? "bg-primary translate-x-1 text-white"
+                              : "text-primary hover:bg-primary hover:text-white",
                           )}
                         >
                           {subItem.icon ? (
-                            <subItem.icon className="mr-3" />
+                            <subItem.icon className="mr-3 size-4" />
                           ) : null}
                           <span>{subItem.menu_name}</span>
                         </Link>
@@ -124,7 +134,7 @@ const SidebarNavItems = () => {
                     : "text-primary hover:bg-primary hover:text-white",
                 )}
               >
-{item.icon ? <item.icon className="mr-3" /> : null}
+                {item.icon ? <item.icon className="mr-3 size-4" /> : null}
                 {item.menu_name}
               </Link>
             )}

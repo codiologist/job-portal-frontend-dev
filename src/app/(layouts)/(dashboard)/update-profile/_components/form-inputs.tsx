@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 "use client";
 import {
   FormControl,
@@ -73,14 +75,14 @@ export const TextInput = <T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="form-inoput-item">
-          <FormLabel>
+          <FormLabel className="gap-1 text-base">
             {label} {required && <span className="text-destructive">*</span>}
           </FormLabel>
           <FormControl>
             <div className="relative">
               <Input
                 className={cn(
-                  "h-10 border-[#D0D5DD] bg-white disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 max-sm:h-11",
+                  "&[aria-invalid='true']_&]:border-destructive h-10 rounded-sm border-[#D0D5DD] bg-white text-base! disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 max-sm:h-11",
                   icon && "pr-12",
                 )}
                 type={type}
@@ -96,7 +98,7 @@ export const TextInput = <T extends FieldValues>({
                 inputMode={inputMode} // Add this line
               />
               {icon && (
-                <div className="absolute right-3 top-0 flex h-full items-center justify-center text-tertiary-primary">
+                <div className="text-tertiary-primary absolute top-0 right-3 flex h-full items-center justify-center">
                   {icon}
                 </div>
               )}
@@ -117,6 +119,7 @@ interface TextAreaInputProps {
   placeholder?: string;
   icon?: ReactNode;
   required?: boolean;
+  className?: string;
 }
 
 export const TextAreaInput = ({
@@ -126,6 +129,7 @@ export const TextAreaInput = ({
   placeholder = "Enter your text",
   icon,
   required = false,
+  className,
 }: TextAreaInputProps) => {
   return (
     <FormField
@@ -133,21 +137,22 @@ export const TextAreaInput = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>
+          <FormLabel className="gap-1 text-base">
             {label} {required && <span className="text-destructive">*</span>}
           </FormLabel>
           <FormControl>
             <div className="relative">
               <Textarea
                 className={cn(
-                  "placeholder:text-primary-gray h-20 rounded-none border-[#D0D5DD] bg-white disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 lg:h-28",
+                  "placeholder:text-primary-gray h-40 rounded-sm border-[#D0D5DD] bg-white disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 lg:h-28 xl:h-20",
+                  className,
                   icon && "pr-12",
                 )}
                 placeholder={placeholder}
                 {...field}
               />
               {icon && (
-                <div className="text-primary-gray absolute right-3 top-0 flex h-full items-center justify-center">
+                <div className="text-primary-gray absolute top-0 right-3 flex h-full items-center justify-center">
                   {icon}
                 </div>
               )}
@@ -220,7 +225,7 @@ export const SelectInput = ({
             disabled={disabled}
           >
             <FormControl>
-              <SelectTrigger className="relative h-10 border-[#D0D5DD] bg-white transition-all duration-300 max-sm:h-11 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:text-tertiary-primary/60 [&>svg]:opacity-100">
+              <SelectTrigger className="[&>svg]:text-tertiary-primary/60 relative h-10 border-[#D0D5DD] bg-white transition-all duration-300 max-sm:h-11 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:opacity-100">
                 <SelectValue
                   className="placeholder:!text-primary-gray"
                   placeholder={placeholder}
