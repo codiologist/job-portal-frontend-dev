@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useComboboxAnchor } from "@/components/ui/combobox";
 import { Form } from "@/components/ui/form";
 import api from "@/lib/axiosInstance";
 
@@ -11,6 +10,9 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   BriefcaseBusiness,
+  IdCard,
+  Link,
+  Mail,
   Plus,
   TextInitial,
   Trash2,
@@ -18,6 +20,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Resolver, useFieldArray, useForm } from "react-hook-form";
+import { FaMobileAlt } from "react-icons/fa";
 import { LiaUserTieSolid } from "react-icons/lia";
 import ProfileContentCard from "../../../_components/profile-content-card";
 import {
@@ -51,10 +54,9 @@ const socialLinks = [
 ];
 
 const PersonalInformationForm = () => {
-  const anchor = useComboboxAnchor();
   const [personalDropdownData, setPersonalDropdownData] =
     useState<TUserOptionsStrict>();
-  const [religionId, setReligionId] = useState<string | undefined>(undefined);
+  const [showSpouseField, setShowSpouseField] = useState(false);
 
   console.log("All Dropdown", personalDropdownData);
 
@@ -68,12 +70,33 @@ const PersonalInformationForm = () => {
       fullName: "",
       fatherName: "",
       motherName: "",
+      spouseName: "",
       dob: undefined,
+      mobileNo: "",
+      alternatePhone: "",
+      emailAddress: "",
+      gender: "",
       religionId: "",
+      bloodGroupId: "",
+      maritalStatus: "",
+      nationality: "",
+      nationalId: "",
       socialLink: [{ label: "", url: "" }],
+      portfolioLink: "",
       skillIds: [], // 👈 REQUIRED
+      interstIds: [],
     },
   });
+
+  const maritalStatus = form.watch("maritalStatus");
+
+  useEffect(() => {
+    const isMarried = maritalStatus === "MARRIED";
+    setShowSpouseField(isMarried);
+    if (!isMarried) {
+      form.setValue("spouseName", "", { shouldValidate: true });
+    }
+  }, [maritalStatus, form]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -163,7 +186,6 @@ const PersonalInformationForm = () => {
                   required
                   icon={<User />}
                 />
-
                 <DatePickerInput
                   form={form}
                   name="dob"
@@ -171,7 +193,42 @@ const PersonalInformationForm = () => {
                   placeholder="Select your date of birth"
                   required
                 />
-
+                <TextInput
+                  form={form}
+                  name="mobileNo"
+                  label="Mobile Number"
+                  placeholder="Enter your mobile number"
+                  required
+                  icon={<FaMobileAlt className="size-5.5" />}
+                />
+                <TextInput
+                  form={form}
+                  name="alternatePhone"
+                  label="Alternate Mobile Number"
+                  placeholder="Enter your alternate mobile number"
+                  required
+                  icon={<FaMobileAlt className="size-5.5" />}
+                />
+                <TextInput
+                  form={form}
+                  name="emailAddress"
+                  label="Email Address"
+                  placeholder="Enter your email address"
+                  required
+                  icon={<Mail className="size-5.5" />}
+                />
+                <SelectInput
+                  form={form}
+                  name="gender"
+                  label="Gender"
+                  placeholder="Select Gender"
+                  options={[
+                    { label: "Male", value: "MALE" },
+                    { label: "Female", value: "FEMALE" },
+                    { label: "Other", value: "OTHER" },
+                  ]}
+                  required
+                />
                 <SelectInput
                   form={form}
                   name="religionId"
@@ -193,6 +250,65 @@ const PersonalInformationForm = () => {
                   }
                   required
                 />
+                <SelectInput
+                  form={form}
+                  name="bloodGroupId"
+                  label="Blood Group"
+                  options={
+                    Array.isArray(personalDropdownData?.bloodGroup)
+                      ? personalDropdownData.bloodGroup.map((r) => ({
+                          label: r.name,
+                          value: r.id,
+                        }))
+                      : personalDropdownData?.bloodGroup
+                        ? [
+                            {
+                              label: personalDropdownData.bloodGroup.name,
+                              value: personalDropdownData.bloodGroup.id,
+                            },
+                          ]
+                        : []
+                  }
+                  required
+                />
+                <SelectInput
+                  form={form}
+                  name="maritalStatus"
+                  label="Marital Status"
+                  placeholder="Select marital status"
+                  options={[
+                    { label: "Unmarried", value: "UNMARRIED" },
+                    { label: "Married", value: "MARRIED" },
+                    { label: "Other", value: "OTHER" },
+                  ]}
+                  required
+                />
+                {showSpouseField && (
+                  <TextInput
+                    form={form}
+                    name="spouseName"
+                    label="Spouse's Name"
+                    placeholder="Enter your spouse's name"
+                    required={maritalStatus === "MARRIED"}
+                  />
+                )}
+
+                <TextInput
+                  form={form}
+                  name="nationality"
+                  label="Nationality"
+                  placeholder="Enter nationality"
+                  required
+                  icon={<IdCard className="size-6.5" />}
+                />
+                <TextInput
+                  form={form}
+                  name="nationalId"
+                  label="NID No."
+                  placeholder="Enter NID No."
+                  required
+                  icon={<IdCard className="size-6.5" />}
+                />
               </div>
             </ProfileContentCard>
           </section>
@@ -202,32 +318,6 @@ const PersonalInformationForm = () => {
               <h1 className="text-dark-blue-700 mb-2 text-lg font-bold xl:text-2xl">
                 Skills
               </h1>
-
-              {/* <Controller
-                control={form.control}
-                name="skillIds"
-                render={({ field, fieldState }) => (
-                  <div className="space-y-2">
-                    <MultiSelectInput
-                      skills={
-                        Array.isArray(personalDropdownData?.skills)
-                          ? personalDropdownData.skills
-                          : personalDropdownData?.skills
-                            ? [personalDropdownData.skills]
-                            : []
-                      }
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-
-                    {fieldState.error && (
-                      <FormMessage className="text-destructive">
-                        {fieldState.error.message}
-                      </FormMessage>
-                    )}
-                  </div>
-                )}
-              /> */}
 
               <MultiSelectInput
                 control={form.control}
@@ -256,58 +346,93 @@ const PersonalInformationForm = () => {
               <h1 className="text-dark-blue-700 mb-2 text-lg font-bold xl:text-2xl">
                 Interest
               </h1>
+              <MultiSelectInput
+                control={form.control}
+                name="interstIds"
+                required
+                placeholder="Select Interest"
+                options={
+                  Array.isArray(personalDropdownData?.interests)
+                    ? personalDropdownData.interests.map((s) => ({
+                        id: s.id,
+                        label: s.interstName,
+                      }))
+                    : personalDropdownData?.interests
+                      ? [
+                          {
+                            id: personalDropdownData.interests.id,
+                            label: personalDropdownData.interests.interstName,
+                          },
+                        ]
+                      : []
+                }
+              />
             </ProfileContentCard>
           </section>
 
           <section>
             <ProfileContentCard>
-              <div className="space-y-10">
-                <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-xl">
-                  Portfolio &amp; Social Links
-                </h1>
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-dark-blue-700 mb-1 text-lg font-bold xl:text-xl">
+                    Portfolio Link
+                  </h1>
+                  <TextInput
+                    form={form}
+                    name="portfolioLink"
+                    placeholder="Enter your portfolio URL"
+                    icon={<Link className="size-4.5" />}
+                  />
+                </div>
+                <div>
+                  <h1 className="text-dark-blue-700 mb-1 text-lg font-bold xl:text-xl">
+                    Social Links
+                  </h1>
 
-                <div className="">
-                  {fields.map((field, index) => (
-                    <div
-                      key={field.id}
-                      className="flex w-full items-center gap-x-2"
+                  <div className="">
+                    {fields.map((field, index) => (
+                      <div
+                        key={field.id}
+                        className="flex w-full items-center gap-x-2"
+                      >
+                        <div>
+                          <SelectInput
+                            form={form}
+                            name={`socialLink.${index}.label`}
+                            options={socialLinks}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <TextInput
+                            form={form}
+                            name={`socialLink.${index}.url`}
+                            placeholder="Enter your social link"
+                            icon={<Link className="size-4.5" />}
+                          />
+                        </div>
+
+                        {fields.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            className="mt-2"
+                            onClick={() => remove(index)}
+                          >
+                            <Trash2 />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="mt-2"
+                      onClick={() => append({ label: "", url: "" })}
                     >
-                      <div>
-                        <SelectInput
-                          form={form}
-                          name={`socialLink.${index}.label`}
-                          options={socialLinks}
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <TextInput
-                          form={form}
-                          name={`socialLink.${index}.url`}
-                          placeholder="Enter your social link"
-                        />
-                      </div>
-
-                      {fields.length > 1 && (
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          className="mt-2"
-                          onClick={() => remove(index)}
-                        >
-                          <Trash2 />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="mt-2"
-                    onClick={() => append({ label: "", url: "" })}
-                  >
-                    <Plus /> Add More Link
-                  </Button>
+                      <Plus /> Add More Link
+                    </Button>
+                  </div>
                 </div>
               </div>
             </ProfileContentCard>

@@ -12,6 +12,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import {
   FormControl,
@@ -116,25 +117,27 @@ export function MultiSelectInput<T extends FieldValues>({
                   <PopoverContent className="w-full p-0">
                     <Command>
                       <CommandInput placeholder="Search..." />
-                      <CommandEmpty>No data found.</CommandEmpty>
-                      <CommandGroup>
-                        {options.map((option) => (
-                          <CommandItem
-                            key={option.id}
-                            onSelect={() => toggleItem(option.id)}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                value.includes(option.id)
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {option.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <CommandList>
+                        <CommandEmpty>No data found.</CommandEmpty>
+                        <CommandGroup>
+                          {options.map((option) => (
+                            <CommandItem
+                              key={option.id}
+                              onSelect={() => toggleItem(option.id)}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  value.includes(option.id)
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                              {option.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
                     </Command>
                   </PopoverContent>
                 </Popover>

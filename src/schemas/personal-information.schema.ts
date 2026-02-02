@@ -16,10 +16,6 @@ export const personalInformationSchema = z.object({
   fullName: z.string().min(5, "First name must be at least 5 characters"),
   fatherName: z.string().min(5, "Father name must be at least 5 characters"),
   motherName: z.string().min(5, "Mother name must be at least 5 characters"),
-  religionId: z.string().min(1, {
-    // Changed from z.string({ required_error: ... })
-    message: "Please select your religion.",
-  }),
   dob: z.preprocess(
     (val) => (typeof val === "string" ? new Date(val) : val),
     z.date().refine(
@@ -39,7 +35,39 @@ export const personalInformationSchema = z.object({
       { message: "You must be at least 18 years old." },
     ),
   ),
-
+  mobileNo: z
+    .string()
+    .max(11, {
+      message: "Phone number not more than 11 digit.",
+    })
+    .regex(/^(\+880\s?|0)1[3-9]\d{2}-?\d{6}$/, "Invalid phone number."),
+  alternatePhone: z
+    .string()
+    .optional()
+    .refine((val) => !val || /^(\+880\s?|0)1[3-9]\d{2}-?\d{6}$/.test(val), {
+      message: "Invalid phone number.",
+    }),
+  emailAddress: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  gender: z.string().min(1, {
+    message: "Please select your gender.",
+  }),
+  religionId: z.string().min(1, {
+    message: "Please select your religion.",
+  }),
+  bloodGroupId: z.string().min(1, {
+    message: "Please select your bloodgroup.",
+  }),
+  nationality: z.string().min(5, "Nationality is required."),
+  nationalId: z
+    .string()
+    .min(10, {
+      message: "Enter your NID 10 digits or 17 digit identification number.",
+    })
+    .max(17, {
+      message: "Enter your NID 10 digits or 17 digit identification number.",
+    }),
   socialLink: z
     .array(socialLinkSchema)
     .min(1, "At least one social link is required")
@@ -50,10 +78,14 @@ export const personalInformationSchema = z.object({
       },
     ),
 
+  portfolioLink: z.string().optional(),
+  maritalStatus: z.string().min(1, {
+    message: "Please select your marital status.",
+  }),
+  spouseName: z.string().optional(),
+
   skillIds: z.array(z.string()).min(1, "Select at least one skill"),
-  // interstIds: z
-  //   .array(z.string().uuid())
-  //   .min(1, "Please select at least one skill"),
+  interstIds: z.array(z.string()).min(1, "Select at least one interest"),
 });
 
 export type PersonalInfoValues = z.infer<typeof personalInformationSchema>;
