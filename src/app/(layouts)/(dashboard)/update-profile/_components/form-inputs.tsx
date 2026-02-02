@@ -46,7 +46,7 @@ import { useState } from "react";
 interface TextInputProps<T extends FieldValues> {
   form: UseFormReturn<any>;
   name: Path<T>;
-  label: string;
+  label?: string;
   placeholder?: string;
   type?: "text" | "number" | "tel" | "email";
   icon?: React.ReactNode;
@@ -117,7 +117,7 @@ export const TextInput = <T extends FieldValues>({
 interface TextAreaInputProps {
   form: UseFormReturn<any>; // Use UseFormReturn<any> if T is not needed here
   name: string; // Or Path<T> if you want to make it generic
-  label: string;
+  label?: string;
   placeholder?: string;
   icon?: ReactNode;
   required?: boolean;
@@ -146,7 +146,7 @@ export const TextAreaInput = ({
             <div className="relative">
               <Textarea
                 className={cn(
-                  "placeholder:text-primary-gray h-40 rounded-sm border-[#D0D5DD] bg-white disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 lg:h-28 xl:h-20",
+                  "placeholder:text-primary-gray h-60 rounded-sm border-[#D0D5DD] bg-white disabled:bg-gray-200 disabled:text-gray-900 disabled:opacity-100 lg:h-28 xl:h-20",
                   className,
                   icon && "pr-12",
                 )}
@@ -177,11 +177,12 @@ export interface SelectOption {
 interface SelectInputProps {
   form: UseFormReturn<any>;
   name: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   options: SelectOption[];
   required?: boolean;
   disabled?: boolean;
+  multiple?: boolean;
 }
 
 export const SelectInput = ({
@@ -235,9 +236,9 @@ export const SelectInput = ({
               </SelectTrigger>
             </FormControl>
             <SelectContent className="border-[#D0D5DD]">
-              {options.map((option) => (
+              {options.map((option, idx) => (
                 <SelectItem
-                  key={String(option.value)}
+                  key={String(idx)}
                   value={String(option.value)}
                   className="cursor-pointer"
                 >

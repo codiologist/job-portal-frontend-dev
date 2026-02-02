@@ -1,13 +1,23 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useComboboxAnchor } from "@/components/ui/combobox";
 import { Form } from "@/components/ui/form";
+import api from "@/lib/axiosInstance";
+
 import {
   PersonalInfoValues,
   personalInformationSchema,
 } from "@/schemas/personal-information.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BriefcaseBusiness, TextInitial, User } from "lucide-react";
-import { Resolver, useForm } from "react-hook-form";
+import {
+  BriefcaseBusiness,
+  Plus,
+  TextInitial,
+  Trash2,
+  User,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Resolver, useFieldArray, useForm } from "react-hook-form";
 import { LiaUserTieSolid } from "react-icons/lia";
 import ProfileContentCard from "../../../_components/profile-content-card";
 import {
@@ -16,16 +26,38 @@ import {
   TextAreaInput,
   TextInput,
 } from "../../_components/form-inputs";
+import { MultiSelectInput } from "../../_components/multi-select-input";
+import { TUserOptionsStrict } from "./dropdown-types";
 
-const religionOptions = [
-  { label: "Islam", value: "ISLAM" },
-  { label: "Hinduism", value: "HINDUISM" },
-  { label: "Christianity", value: "CHRISTIANITY" },
-  { label: "Buddhism", value: "BUDDHISM" },
-  { label: "Other", value: "OTHER" },
+const socialLinks = [
+  { label: "Facebook", value: "Facebook" },
+  { label: "Instagram", value: "Instagram" },
+  { label: "Twitter (X)", value: "Twitter" },
+  { label: "LinkedIn", value: "LinkedIn" },
+  { label: "YouTube", value: "YouTube" },
+  { label: "GitHub", value: "GitHub" },
+  { label: "GitLab", value: "GitLab" },
+  { label: "Bitbucket", value: "Bitbucket" },
+  { label: "WhatsApp", value: "WhatsApp" },
+  { label: "Telegram", value: "Telegram" },
+  { label: "Pinterest", value: "Pinterest" },
+  { label: "Reddit", value: "Reddit" },
+  { label: "Medium", value: "Medium" },
+  { label: "Dev.to", value: "DevTo" },
+  { label: "Stack Overflow", value: "StackOverflow" },
+  { label: "Dribbble", value: "Dribbble" },
+  { label: "Behance", value: "Behance" },
+  { label: "Website", value: "Website" },
 ];
 
 const PersonalInformationForm = () => {
+  const anchor = useComboboxAnchor();
+  const [personalDropdownData, setPersonalDropdownData] =
+    useState<TUserOptionsStrict>();
+  const [religionId, setReligionId] = useState<string | undefined>(undefined);
+
+  console.log("All Dropdown", personalDropdownData);
+
   const form = useForm<PersonalInfoValues>({
     resolver: zodResolver(
       personalInformationSchema,
@@ -37,87 +69,258 @@ const PersonalInformationForm = () => {
       fatherName: "",
       motherName: "",
       dob: undefined,
-      religion: "",
+      religionId: "",
+      socialLink: [{ label: "", url: "" }],
+      skillIds: [], // 👈 REQUIRED
     },
   });
 
-  function onSubmit(data: PersonalInfoValues) {
-    console.log(data);
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "socialLink",
+  });
+
+  useEffect(() => {
+    const dropdownData = async (): Promise<void> => {
+      const res = await api.get("/user/profile/personal/dropdown");
+      setPersonalDropdownData(res.data.data);
+    };
+
+    // call the async loader
+    void dropdownData();
+  }, []);
+
+  async function onSubmit(data: PersonalInfoValues) {
+    const payload = {
+      ...data,
+      dob: data.dob instanceof Date ? data.dob.toISOString() : data.dob,
+    };
+    // try {
+    //   await api.post("/user/profile/personal", payload);
+    // } catch (error) {
+    //   console.error("Error updating personal information:", error);
+    // }
+    console.log(payload);
   }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="space-y-14">
-          <ProfileContentCard title="Career Details">
-            <div className="space-y-6">
-              <TextInput
-                form={form}
-                name="careerTitle"
-                label="Position Title"
-                placeholder="Enter your positon (i.e. Senior Software Engineer)"
-                required
-                icon={<BriefcaseBusiness />}
-              />
-              <TextAreaInput
-                form={form}
-                name="careerObjective"
-                className="text-base!"
-                label="Career Objective"
-                placeholder="Tell us about yourself"
-                required
-                icon={<TextInitial />}
-              />
-            </div>
-          </ProfileContentCard>
-          <ProfileContentCard title="Personal Information" className="mt-6">
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-              <TextInput
-                form={form}
-                name="fullName"
-                label="Full Name"
-                placeholder="Enter your full name"
-                required
-                icon={<LiaUserTieSolid className="size-6.5" />}
-              />
-              <TextInput
-                form={form}
-                name="fatherName"
-                label="Father Name"
-                placeholder="Enter your full name"
-                required
-                icon={<User />}
-              />
-              <TextInput
-                form={form}
-                name="motherName"
-                label="Mother Name"
-                placeholder="Enter your full name"
-                required
-                icon={<User />}
-              />
+        <div className="border-dark-blue-200 bg-dark-blue-200/10 ov space-y-10 rounded-4xl border p-6">
+          <section>
+            <ProfileContentCard>
+              <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-2xl">
+                Career Objective
+              </h1>
+              <div className="space-y-6">
+                <TextInput
+                  form={form}
+                  name="careerTitle"
+                  label="Position Title"
+                  placeholder="Enter your positon (i.e. Senior Software Engineer)"
+                  required
+                  icon={<BriefcaseBusiness />}
+                />
+                <TextAreaInput
+                  form={form}
+                  name="careerObjective"
+                  className="h-60! text-base!"
+                  label="Career Objective"
+                  placeholder="Tell us about yourself"
+                  required
+                  icon={<TextInitial />}
+                />
+              </div>
+            </ProfileContentCard>
+          </section>
 
-              <DatePickerInput
-                form={form}
-                name="dob"
-                label="Date of Birth (DD/MM/YYYY)"
-                placeholder="Select your date of birth"
-                required
-              />
+          <section>
+            <ProfileContentCard>
+              <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-2xl">
+                Personal Information
+              </h1>
+              <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                <TextInput
+                  form={form}
+                  name="fullName"
+                  label="Full Name"
+                  placeholder="Enter your full name"
+                  required
+                  icon={<LiaUserTieSolid className="size-6.5" />}
+                />
+                <TextInput
+                  form={form}
+                  name="fatherName"
+                  label="Father Name"
+                  placeholder="Enter your full name"
+                  required
+                  icon={<User />}
+                />
+                <TextInput
+                  form={form}
+                  name="motherName"
+                  label="Mother Name"
+                  placeholder="Enter your full name"
+                  required
+                  icon={<User />}
+                />
 
-              <SelectInput
-                form={form}
-                name="religion"
-                label="Religion"
-                options={religionOptions}
+                <DatePickerInput
+                  form={form}
+                  name="dob"
+                  label="Date of Birth (DD/MM/YYYY)"
+                  placeholder="Select your date of birth"
+                  required
+                />
+
+                <SelectInput
+                  form={form}
+                  name="religionId"
+                  label="Religion"
+                  options={
+                    Array.isArray(personalDropdownData?.religion)
+                      ? personalDropdownData.religion.map((r) => ({
+                          label: r.name,
+                          value: r.id,
+                        }))
+                      : personalDropdownData?.religion
+                        ? [
+                            {
+                              label: personalDropdownData.religion.name,
+                              value: personalDropdownData.religion.id,
+                            },
+                          ]
+                        : []
+                  }
+                  required
+                />
+              </div>
+            </ProfileContentCard>
+          </section>
+
+          <section className="flex flex-col gap-6 xl:flex-row">
+            <ProfileContentCard>
+              <h1 className="text-dark-blue-700 mb-2 text-lg font-bold xl:text-2xl">
+                Skills
+              </h1>
+
+              {/* <Controller
+                control={form.control}
+                name="skillIds"
+                render={({ field, fieldState }) => (
+                  <div className="space-y-2">
+                    <MultiSelectInput
+                      skills={
+                        Array.isArray(personalDropdownData?.skills)
+                          ? personalDropdownData.skills
+                          : personalDropdownData?.skills
+                            ? [personalDropdownData.skills]
+                            : []
+                      }
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+
+                    {fieldState.error && (
+                      <FormMessage className="text-destructive">
+                        {fieldState.error.message}
+                      </FormMessage>
+                    )}
+                  </div>
+                )}
+              /> */}
+
+              <MultiSelectInput
+                control={form.control}
+                name="skillIds"
                 required
+                placeholder="Select skills"
+                options={
+                  Array.isArray(personalDropdownData?.skills)
+                    ? personalDropdownData.skills.map((s) => ({
+                        id: s.id,
+                        label: s.skillName,
+                      }))
+                    : personalDropdownData?.skills
+                      ? [
+                          {
+                            id: personalDropdownData.skills.id,
+                            label: personalDropdownData.skills.skillName,
+                          },
+                        ]
+                      : []
+                }
               />
-            </div>
-          </ProfileContentCard>
-        </div>
-        <div className="mt-6 text-right">
-          <Button type="submit" className="rounded-sm text-base font-semibold">
-            Update
-          </Button>
+            </ProfileContentCard>
+
+            <ProfileContentCard>
+              <h1 className="text-dark-blue-700 mb-2 text-lg font-bold xl:text-2xl">
+                Interest
+              </h1>
+            </ProfileContentCard>
+          </section>
+
+          <section>
+            <ProfileContentCard>
+              <div className="space-y-10">
+                <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-xl">
+                  Portfolio &amp; Social Links
+                </h1>
+
+                <div className="">
+                  {fields.map((field, index) => (
+                    <div
+                      key={field.id}
+                      className="flex w-full items-center gap-x-2"
+                    >
+                      <div>
+                        <SelectInput
+                          form={form}
+                          name={`socialLink.${index}.label`}
+                          options={socialLinks}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <TextInput
+                          form={form}
+                          name={`socialLink.${index}.url`}
+                          placeholder="Enter your social link"
+                        />
+                      </div>
+
+                      {fields.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          className="mt-2"
+                          onClick={() => remove(index)}
+                        >
+                          <Trash2 />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="mt-2"
+                    onClick={() => append({ label: "", url: "" })}
+                  >
+                    <Plus /> Add More Link
+                  </Button>
+                </div>
+              </div>
+            </ProfileContentCard>
+          </section>
+
+          <div className="mt-6 text-right">
+            <Button
+              type="submit"
+              className="rounded-sm text-base font-semibold"
+            >
+              Update
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

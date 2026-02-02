@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 type ProfileContentCardProps = {
-  title: string;
+  title?: string;
   children: React.ReactNode;
   className?: string;
 };
