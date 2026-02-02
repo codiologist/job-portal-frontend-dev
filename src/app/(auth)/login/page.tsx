@@ -20,7 +20,7 @@ const LoginPage = () => {
               </Link>
             </div>
             <div className="mt-4 mb-12">
-              <p className="text-blue-water text-center text-3xl font-bold">
+              <p className="text-dark-blue text-center text-3xl font-bold">
                 Welcome
               </p>
               <p className="mt-2 text-center text-gray-600">

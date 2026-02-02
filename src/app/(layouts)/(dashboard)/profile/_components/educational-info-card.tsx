@@ -8,28 +8,28 @@ const EducationalInfoCard = () => {
     <section className="mt-10">
       <ProfileContentCard title="Education">
         <ul className="space-y-6">
-          <li className="border-blue-water-300/50 flex flex-col gap-4 rounded-2xl border px-4 py-4 xl:flex-row xl:items-start xl:justify-between">
+          <li className="border-dark-blue-300/50 flex flex-col gap-4 rounded-2xl border px-4 py-4 xl:flex-row xl:items-start xl:justify-between">
             <div>
-              <h4 className="text-blue-water-700 item-start mb-2 flex gap-2 text-base font-bold xl:items-center xl:text-2xl">
+              <h4 className="text-dark-blue-700 item-start mb-2 flex gap-2 text-base font-bold xl:items-center xl:text-xl">
                 <GraduationCap className="size-7" />
                 Higher Secondary School Certificate (HSC)
               </h4>
               <div className="space-y-1.5 pl-1">
                 <p className="flex items-center gap-2 text-sm font-semibold xl:text-base">
-                  <Book className="text-blue-water-700/80 size-4 xl:size-5" />
+                  <Book className="text-dark-blue-700/80 size-4 xl:size-5" />
                   Science
                 </p>
                 <p className="flex items-start gap-2 text-sm font-semibold xl:items-center xl:text-base">
-                  <School className="text-blue-water-700/80 size-4 xl:size-5" />
+                  <School className="text-dark-blue-700/80 size-4 xl:size-5" />
                   Gazipur Cantonment Board College
                 </p>
                 <div className="flex gap-4">
                   <p className="flex items-center gap-2 text-sm font-semibold xl:text-base">
-                    <LucideCalendar1 className="text-blue-water-700/80 size-4 xl:size-5" />
+                    <LucideCalendar1 className="text-dark-blue-700/80 size-4 xl:size-5" />
                     2004
                   </p>
                   <p className="flex items-center gap-2 text-sm font-semibold xl:text-base">
-                    <PiCertificateLight className="text-blue-water-700/80 size-4.5 xl:size-6" />
+                    <PiCertificateLight className="text-dark-blue-700/80 size-4.5 xl:size-6" />
                     GPA: 4.80
                   </p>
                 </div>
@@ -45,28 +45,28 @@ const EducationalInfoCard = () => {
               />
             </div>
           </li>
-          <li className="border-blue-water-300/50 flex flex-col gap-4 rounded-2xl border px-4 py-4 xl:flex-row xl:items-start xl:justify-between">
+          <li className="border-dark-blue-300/50 flex flex-col gap-4 rounded-2xl border px-4 py-4 xl:flex-row xl:items-start xl:justify-between">
             <div>
-              <h4 className="text-blue-water-700 item-start mb-2 flex gap-2 text-base font-bold xl:items-center xl:text-2xl">
-                <GraduationCap className="size-7" />
+              <h4 className="text-dark-blue-700 item-start mb-2 flex gap-2 text-base font-bold xl:items-center xl:text-xl">
+                <GraduationCap className="size-6" />
                 Secondary School Certificate (SSC)
               </h4>
               <div className="space-y-1.5 pl-1">
                 <p className="flex items-center gap-2 text-sm font-semibold xl:text-base">
-                  <Book className="text-blue-water-700/80 size-4 xl:size-5" />
+                  <Book className="text-dark-blue-700/80 size-4 xl:size-5" />
                   Science
                 </p>
                 <p className="flex items-start gap-2 text-sm font-semibold xl:items-center xl:text-base">
-                  <School className="text-blue-water-700/80 size-4 xl:size-5" />
+                  <School className="text-dark-blue-700/80 size-4 xl:size-5" />
                   Gazipur Cantonment Board High School
                 </p>
                 <div className="flex gap-4">
                   <p className="flex items-center gap-2 text-sm font-semibold xl:text-base">
-                    <LucideCalendar1 className="text-blue-water-700/80 size-4 xl:size-5" />
+                    <LucideCalendar1 className="text-dark-blue-700/80 size-4 xl:size-5" />
                     2002
                   </p>
                   <p className="flex items-center gap-2 text-sm font-semibold xl:text-base">
-                    <PiCertificateLight className="text-blue-water-700/80 size-4.5 xl:size-6" />
+                    <PiCertificateLight className="text-dark-blue-700/80 size-4.5 xl:size-6" />
                     GPA: 4.10
                   </p>
                 </div>

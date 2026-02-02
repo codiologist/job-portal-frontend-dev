@@ -70,7 +70,7 @@ export const sidebarNavigationItems = [
       },
       {
         menu_name: "Educational Info",
-        href: "/update-profile/experience-information",
+        href: "/update-profile/education-information",
         icon: icons.GraduationCap,
       },
       {

@@ -84,7 +84,7 @@ export default function MobileMenu() {
 
           <button
             onClick={toggleMenu}
-            className="bg-primary hover:bg-blue-water-700 flex h-10 w-10 items-center justify-center rounded-full text-white transition-all duration-200 hover:scale-105"
+            className="bg-primary hover:bg-dark-blue-700 flex h-10 w-10 items-center justify-center rounded-full text-white transition-all duration-200 hover:scale-105"
             aria-label="Toggle menu"
           >
             <Menu />
@@ -117,7 +117,7 @@ export default function MobileMenu() {
           <div className="absolute top-5 right-5">
             <button
               onClick={toggleMenu}
-              className="bg-blue-water-700 hover:bg-primary flex h-10 w-10 items-center justify-center rounded-full text-white transition-all duration-200 hover:scale-105"
+              className="bg-dark-blue-700 hover:bg-primary flex h-10 w-10 items-center justify-center rounded-full text-white transition-all duration-200 hover:scale-105"
               aria-label="Toggle menu"
             >
               <X />

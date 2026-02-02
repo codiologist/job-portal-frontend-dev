@@ -100,7 +100,7 @@ export const TextInput = <T extends FieldValues>({
                 inputMode={inputMode} // Add this line
               />
               {icon && (
-                <div className="text-tertiary-primary absolute top-0 right-3 flex h-full items-center justify-center">
+                <div className="text-dark-blue-700 absolute top-0 right-3 flex h-full items-center justify-center">
                   {icon}
                 </div>
               )}
@@ -154,7 +154,7 @@ export const TextAreaInput = ({
                 {...field}
               />
               {icon && (
-                <div className="text-primary-gray absolute top-0 right-3 flex h-full items-center justify-center">
+                <div className="text-dark-blue-700 absolute top-3 right-3 flex h-full justify-center">
                   {icon}
                 </div>
               )}
@@ -199,7 +199,7 @@ export const SelectInput = ({
       name={name}
       render={({ field }) => (
         <FormItem className="form-inoput-item select-input">
-          <FormLabel>
+          <FormLabel className="gap-1 text-base">
             {label} {required && <span className="text-destructive">*</span>}
           </FormLabel>
           <Select
@@ -227,9 +227,9 @@ export const SelectInput = ({
             disabled={disabled}
           >
             <FormControl>
-              <SelectTrigger className="[&>svg]:text-tertiary-primary/60 relative h-10 border-[#D0D5DD] bg-white transition-all duration-300 max-sm:h-11 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:opacity-100">
+              <SelectTrigger className="[&>svg]:text-tertiary-primary/60 relative h-10! w-full border-[#D0D5DD] bg-white transition-all duration-300 max-sm:h-11 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:opacity-100">
                 <SelectValue
-                  className="placeholder:!text-primary-gray"
+                  className="placeholder:text-primary-gray!"
                   placeholder={placeholder}
                 />
               </SelectTrigger>
@@ -374,7 +374,7 @@ export const DatePickerInput = ({
       name={name}
       render={({ field }) => (
         <FormItem className="form-inoput-item datepicker-input">
-          <FormLabel>
+          <FormLabel className="text-base">
             {label} {required && <span className="text-destructive">*</span>}
           </FormLabel>
           <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -392,7 +392,7 @@ export const DatePickerInput = ({
                   ) : (
                     <span className="text-muted-foreground">{placeholder}</span>
                   )}
-                  <CalendarIcon className="text-blue-water-700 ml-auto" />
+                  <CalendarIcon className="text-dark-blue-700 ml-auto size-5.5!" />
                 </Button>
               </FormControl>
             </PopoverTrigger>

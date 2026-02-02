@@ -14,19 +14,19 @@ const ExperienceInfoCard = () => {
       <ProfileContentCard title="Work & Experience">
         <ul>
           <li className="relative flex items-baseline gap-5 pb-5">
-            <div className="before:bg-blue-water-700/40 before:absolute before:top-2 before:left-1.75 before:h-full before:w-0.5">
-              <FaCircle className="text-blue-water-700 size-4" />
+            <div className="before:bg-dark-blue-700/40 before:absolute before:top-2 before:left-1.75 before:h-full before:w-0.5">
+              <FaCircle className="text-dark-blue-700 size-4" />
             </div>
-            {/* <div className="text-blue-water-700 relative top-0.5">
+            {/* <div className="text-dark-blue-700 relative top-0.5">
               <FaCircle className="size-4" />
             </div> */}
             <div>
               <div className="flex flex-col items-start xl:flex-row xl:items-center xl:gap-4">
-                <h3 className="text-blue-water-700 mb-0.5 text-xl font-bold">
+                <h3 className="text-dark-blue-700 mb-0.5 text-xl font-bold">
                   Senior Frontend Developer
                 </h3>
                 <div className="hidden rounded-full bg-blue-100/50 px-4 py-0.5 xl:block">
-                  <p className="text-blue-water-700 text-sm font-semibold">
+                  <p className="text-dark-blue-700 text-sm font-semibold">
                     01 November, 2013 – Continue
                   </p>
                 </div>
@@ -36,15 +36,12 @@ const ExperienceInfoCard = () => {
                 <li className="flex items-start gap-3 xl:items-center">
                   <Building2
                     size={16}
-                    className="text-blue-water-700/60 size-5"
+                    className="text-dark-blue-700/60 size-5"
                   />
                   <p className="font-medium">Analyzen Bangladesh Ltd.</p>
                 </li>
                 <li className="flex items-start gap-3 xl:items-center">
-                  <Toolbox
-                    size={16}
-                    className="text-blue-water-700/60 size-5"
-                  />
+                  <Toolbox size={16} className="text-dark-blue-700/60 size-5" />
                   <p className="font-medium">
                     Creative Tech &amp; Marketing Agency
                   </p>
@@ -52,7 +49,7 @@ const ExperienceInfoCard = () => {
                 <li className="flex items-start gap-3 xl:items-center">
                   <MapPin
                     size={16}
-                    className="text-blue-water-700/60 size-9 xl:size-5"
+                    className="text-dark-blue-700/60 size-9 xl:size-5"
                   />
                   <p className="font-medium">
                     Level 1, House 1A, Road 16/A, Gulshan 1 Dhaka-1212,
@@ -62,16 +59,16 @@ const ExperienceInfoCard = () => {
                 <li className="flex items-start gap-3 xl:items-center">
                   <Calendar1Icon
                     size={16}
-                    className="text-blue-water-700/60 size-5"
+                    className="text-dark-blue-700/60 size-5"
                   />
                   <p className="font-medium">01 November, 2013 – Continue</p>
                 </li>
               </ul>
 
-              <p className="text-blue-water-700 mt-2 flex items-center gap-3 text-[17px] font-bold">
+              <p className="text-dark-blue-700 mt-2 flex items-center gap-3 text-[17px] font-bold">
                 <BriefcaseBusiness
                   size={20}
-                  className="text-blue-water-700/60"
+                  className="text-dark-blue-700/60"
                 />
                 Responsiblities:
               </p>
@@ -82,19 +79,19 @@ const ExperienceInfoCard = () => {
             </div>
           </li>
           <li className="relative flex items-baseline gap-5 pb-5">
-            {/* <div className="before:bg-blue-water-700/40 before:absolute before:top-2 before:left-1.75 before:h-full before:w-0.5">
-              <FaCircle className="text-blue-water-700 size-4" />
+            {/* <div className="before:bg-dark-blue-700/40 before:absolute before:top-2 before:left-1.75 before:h-full before:w-0.5">
+              <FaCircle className="text-dark-blue-700 size-4" />
             </div> */}
-            <div className="text-blue-water-700 relative top-0.5">
+            <div className="text-dark-blue-700 relative top-0.5">
               <FaCircle className="size-4" />
             </div>
             <div>
               <div className="flex flex-col items-start xl:flex-row xl:items-center xl:gap-4">
-                <h3 className="text-blue-water-700 mb-0.5 text-xl font-bold">
+                <h3 className="text-dark-blue-700 mb-0.5 text-xl font-bold">
                   Frontend Developer
                 </h3>
                 <div className="hidden rounded-full bg-blue-100/50 px-4 py-0.5 xl:block">
-                  <p className="text-blue-water-700 text-sm font-semibold">
+                  <p className="text-dark-blue-700 text-sm font-semibold">
                     01 November, 2013 – 01 Januwary, 2018
                   </p>
                 </div>
@@ -104,15 +101,12 @@ const ExperienceInfoCard = () => {
                 <li className="flex items-start gap-3 xl:items-center">
                   <Building2
                     size={16}
-                    className="text-blue-water-700/60 size-5"
+                    className="text-dark-blue-700/60 size-5"
                   />
                   <p className="font-medium">Analyzen Bangladesh Ltd.</p>
                 </li>
                 <li className="flex items-start gap-3 xl:items-center">
-                  <Toolbox
-                    size={16}
-                    className="text-blue-water-700/60 size-5"
-                  />
+                  <Toolbox size={16} className="text-dark-blue-700/60 size-5" />
                   <p className="font-medium">
                     Creative Tech &amp; Marketing Agency
                   </p>
@@ -120,7 +114,7 @@ const ExperienceInfoCard = () => {
                 <li className="flex items-start gap-3 xl:items-center">
                   <MapPin
                     size={16}
-                    className="text-blue-water-700/60 size-9 xl:size-5"
+                    className="text-dark-blue-700/60 size-9 xl:size-5"
                   />
                   <p className="font-medium">
                     Level 1, House 1A, Road 16/A, Gulshan 1 Dhaka-1212,
@@ -130,16 +124,16 @@ const ExperienceInfoCard = () => {
                 <li className="flex items-start gap-3 xl:items-center">
                   <Calendar1Icon
                     size={16}
-                    className="text-blue-water-700/60 size-5"
+                    className="text-dark-blue-700/60 size-5"
                   />
                   <p className="font-medium">01 November, 2013 – Continue</p>
                 </li>
               </ul>
 
-              <p className="text-blue-water-700 mt-2 flex items-center gap-3 text-[17px] font-bold">
+              <p className="text-dark-blue-700 mt-2 flex items-center gap-3 text-[17px] font-bold">
                 <BriefcaseBusiness
                   size={20}
-                  className="text-blue-water-700/60"
+                  className="text-dark-blue-700/60"
                 />
                 Responsiblities:
               </p>

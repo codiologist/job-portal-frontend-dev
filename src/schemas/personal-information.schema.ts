@@ -10,6 +10,10 @@ export const personalInformationSchema = z.object({
   fullName: z.string().min(5, "First name must be at least 5 characters"),
   fatherName: z.string().min(5, "Father name must be at least 5 characters"),
   motherName: z.string().min(5, "Mother name must be at least 5 characters"),
+  religion: z.string().min(1, {
+    // Changed from z.string({ required_error: ... })
+    message: "Please select your religion.",
+  }),
   dob: z.preprocess(
     (val) => (typeof val === "string" ? new Date(val) : val),
     z.date().refine(

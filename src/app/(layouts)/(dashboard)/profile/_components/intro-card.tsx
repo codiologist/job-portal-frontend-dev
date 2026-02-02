@@ -27,7 +27,7 @@ const IntroCard = () => {
           <div className="mt-26 xl:mt-1 xl:ml-36">
             <div className="flex flex-col xl:flex-row xl:items-start">
               <div className="w-full text-center xl:w-9/12 xl:text-left">
-                <h1 className="text-blue-water-700 font-exo2 mb-1 text-3xl font-extrabold uppercase xl:text-[40px]">
+                <h1 className="text-dark-blue-700 font-exo2 mb-1 text-3xl font-extrabold uppercase xl:text-[40px]">
                   Firoj Ahmed
                 </h1>
                 <h2 className="mb-2 text-xl font-bold xl:text-2xl">
@@ -35,7 +35,7 @@ const IntroCard = () => {
                 </h2>
               </div>
               <div className="mt-4 w-full text-center xl:mt-0 xl:w-3/12 xl:text-right">
-                <Button className="bg-blue-water-700 rounded-xs text-lg font-semibold">
+                <Button className="bg-dark-blue-700 rounded-xs text-lg font-semibold">
                   <DownloadIcon className="mr-1 size-6" />
                   Download Resume
                 </Button>
@@ -47,7 +47,7 @@ const IntroCard = () => {
                         target="_blank"
                         className="hover:text-primary mr-4"
                       >
-                        <FaFacebook size={29} className="text-blue-water-700" />
+                        <FaFacebook size={29} className="text-dark-blue-700" />
                       </Link>
                     </li>
                     <li>
@@ -56,7 +56,7 @@ const IntroCard = () => {
                         target="_blank"
                         className="hover:text-primary mr-4"
                       >
-                        <FaLinkedin size={30} className="text-blue-water-700" />
+                        <FaLinkedin size={30} className="text-dark-blue-700" />
                       </Link>
                     </li>
                     <li>
@@ -65,10 +65,7 @@ const IntroCard = () => {
                         target="_blank"
                         className="hover:text-primary mr-4"
                       >
-                        <FaInstagram
-                          size={28}
-                          className="text-blue-water-700"
-                        />
+                        <FaInstagram size={28} className="text-dark-blue-700" />
                       </Link>
                     </li>
                     <li>
@@ -77,7 +74,7 @@ const IntroCard = () => {
                         target="_blank"
                         className="hover:text-primary mr-4"
                       >
-                        <FaXTwitter size={28} className="text-blue-water-700" />
+                        <FaXTwitter size={28} className="text-dark-blue-700" />
                       </Link>
                     </li>
                   </ul>

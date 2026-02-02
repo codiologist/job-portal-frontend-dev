@@ -6,10 +6,10 @@ const SkillsInfoCard = () => {
     <section className="mt-10">
       <ProfileContentCard title="Skills">
         <div className="flex flex-wrap gap-2">
-          <Badge className="bg-blue-water-light-900 text-blue-water-700 px-4 text-base font-medium">
+          <Badge className="bg-light-blue-900 text-dark-blue-700 px-4 text-base font-medium">
             React JS
           </Badge>
-          <Badge className="bg-blue-water-light-900 text-blue-water-700 px-4 text-base font-medium">
+          <Badge className="bg-light-blue-900 text-dark-blue-700 px-4 text-base font-medium">
             NEXT JS
           </Badge>
         </div>

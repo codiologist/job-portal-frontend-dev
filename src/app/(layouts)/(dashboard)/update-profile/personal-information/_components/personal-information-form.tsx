@@ -6,24 +6,38 @@ import {
   personalInformationSchema,
 } from "@/schemas/personal-information.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { BriefcaseBusiness, TextInitial, User } from "lucide-react";
+import { Resolver, useForm } from "react-hook-form";
+import { LiaUserTieSolid } from "react-icons/lia";
 import ProfileContentCard from "../../../_components/profile-content-card";
 import {
   DatePickerInput,
+  SelectInput,
   TextAreaInput,
   TextInput,
 } from "../../_components/form-inputs";
 
+const religionOptions = [
+  { label: "Islam", value: "ISLAM" },
+  { label: "Hinduism", value: "HINDUISM" },
+  { label: "Christianity", value: "CHRISTIANITY" },
+  { label: "Buddhism", value: "BUDDHISM" },
+  { label: "Other", value: "OTHER" },
+];
+
 const PersonalInformationForm = () => {
   const form = useForm<PersonalInfoValues>({
-    resolver: zodResolver(personalInformationSchema),
+    resolver: zodResolver(
+      personalInformationSchema,
+    ) as unknown as Resolver<PersonalInfoValues>,
     defaultValues: {
       careerTitle: "",
       careerObjective: "",
       fullName: "",
       fatherName: "",
       motherName: "",
-      dob: new Date(),
+      dob: undefined,
+      religion: "",
     },
   });
 
@@ -42,6 +56,7 @@ const PersonalInformationForm = () => {
                 label="Position Title"
                 placeholder="Enter your positon (i.e. Senior Software Engineer)"
                 required
+                icon={<BriefcaseBusiness />}
               />
               <TextAreaInput
                 form={form}
@@ -50,6 +65,7 @@ const PersonalInformationForm = () => {
                 label="Career Objective"
                 placeholder="Tell us about yourself"
                 required
+                icon={<TextInitial />}
               />
             </div>
           </ProfileContentCard>
@@ -61,6 +77,7 @@ const PersonalInformationForm = () => {
                 label="Full Name"
                 placeholder="Enter your full name"
                 required
+                icon={<LiaUserTieSolid className="size-6.5" />}
               />
               <TextInput
                 form={form}
@@ -68,6 +85,7 @@ const PersonalInformationForm = () => {
                 label="Father Name"
                 placeholder="Enter your full name"
                 required
+                icon={<User />}
               />
               <TextInput
                 form={form}
@@ -75,6 +93,7 @@ const PersonalInformationForm = () => {
                 label="Mother Name"
                 placeholder="Enter your full name"
                 required
+                icon={<User />}
               />
 
               <DatePickerInput
@@ -82,6 +101,14 @@ const PersonalInformationForm = () => {
                 name="dob"
                 label="Date of Birth (DD/MM/YYYY)"
                 placeholder="Select your date of birth"
+                required
+              />
+
+              <SelectInput
+                form={form}
+                name="religion"
+                label="Religion"
+                options={religionOptions}
                 required
               />
             </div>
