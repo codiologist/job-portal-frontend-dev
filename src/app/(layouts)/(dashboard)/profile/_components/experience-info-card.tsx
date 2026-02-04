@@ -1,7 +1,7 @@
 import {
   BriefcaseBusiness,
   Building2,
-  Calendar1Icon,
+  IdCardLanyard,
   MapPin,
   Toolbox,
 } from "lucide-react";
@@ -34,6 +34,13 @@ const ExperienceInfoCard = () => {
 
               <ul className="mt-1.5 space-y-2.5">
                 <li className="flex items-start gap-3 xl:items-center">
+                  <IdCardLanyard
+                    size={16}
+                    className="text-dark-blue-700/60 size-5"
+                  />
+                  <p className="font-medium">IT Solution</p>
+                </li>
+                <li className="flex items-start gap-3 xl:items-center">
                   <Building2
                     size={16}
                     className="text-dark-blue-700/60 size-5"
@@ -55,13 +62,6 @@ const ExperienceInfoCard = () => {
                     Level 1, House 1A, Road 16/A, Gulshan 1 Dhaka-1212,
                     Bangladesh
                   </p>
-                </li>
-                <li className="flex items-start gap-3 xl:items-center">
-                  <Calendar1Icon
-                    size={16}
-                    className="text-dark-blue-700/60 size-5"
-                  />
-                  <p className="font-medium">01 November, 2013 – Continue</p>
                 </li>
               </ul>
 
@@ -99,6 +99,13 @@ const ExperienceInfoCard = () => {
 
               <ul className="mt-1.5 space-y-2.5">
                 <li className="flex items-start gap-3 xl:items-center">
+                  <IdCardLanyard
+                    size={16}
+                    className="text-dark-blue-700/60 size-5"
+                  />
+                  <p className="font-medium">IT Solution</p>
+                </li>
+                <li className="flex items-start gap-3 xl:items-center">
                   <Building2
                     size={16}
                     className="text-dark-blue-700/60 size-5"
@@ -120,13 +127,6 @@ const ExperienceInfoCard = () => {
                     Level 1, House 1A, Road 16/A, Gulshan 1 Dhaka-1212,
                     Bangladesh
                   </p>
-                </li>
-                <li className="flex items-start gap-3 xl:items-center">
-                  <Calendar1Icon
-                    size={16}
-                    className="text-dark-blue-700/60 size-5"
-                  />
-                  <p className="font-medium">01 November, 2013 – Continue</p>
                 </li>
               </ul>
 

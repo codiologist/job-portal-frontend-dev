@@ -9,10 +9,10 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Lock, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Lock, Mail } from "lucide-react";
 import { toast } from "react-toastify";
 import * as z from "zod";
 import GoogleBtn from "./GoogleBtn";
@@ -60,7 +60,7 @@ const LoginForm = () => {
 
       await login(data.email, data.password, captchaToken);
       toast.success("Login successful!");
-      router.push("/profile");
+      router.push("/update-profile/personal-information");
       refetchUser();
     } catch (err: unknown) {
       const error = err as ErrorResponse;

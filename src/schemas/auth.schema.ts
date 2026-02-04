@@ -4,7 +4,12 @@ export const signupSchema = z
   .object({
     name: z.string().min(2, "Name is required"),
     email: z.string().email("Invalid email"),
-    phone: z.string().min(10, "Mobile number must be at least 10 digits"),
+    phone: z
+      .string()
+      .max(11, {
+        message: "Phone number not more than 11 digit.",
+      })
+      .regex(/^(\+880\s?|0)1[3-9]\d{2}-?\d{6}$/, "Invalid phone number."),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(6),
     terms: z.boolean().refine((val) => val === true, {

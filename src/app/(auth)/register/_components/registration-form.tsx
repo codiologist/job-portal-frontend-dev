@@ -34,11 +34,6 @@ const RegistrationForm = () => {
   const form = useForm<SignupInput>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      // name: "Firoj Ahmed",
-      // email: "robin.promoteur@gmail.com",
-      // password: "123456",
-      // confirmPassword: "123456",
-      // terms: true,
       name: "",
       email: "",
       password: "",
@@ -53,12 +48,12 @@ const RegistrationForm = () => {
       setLoading(true);
 
       // Get reCAPTCHA token
-      const captchaToken = await executeRecaptcha("register");
-      if (!captchaToken) {
-        toast.error("reCAPTCHA verification failed. Please try again.");
-        setLoading(false);
-        return;
-      }
+      // const captchaToken = await executeRecaptcha("register");
+      // if (!captchaToken) {
+      //   toast.error("reCAPTCHA verification failed. Please try again.");
+      //   setLoading(false);
+      //   return;
+      // }
 
       console.log("Registration data:", data);
 
@@ -67,7 +62,8 @@ const RegistrationForm = () => {
         data.email,
         data.phone,
         data.password,
-        captchaToken,
+        // Todo: Implement reCAPTCHA verification
+        // captchaToken,
       );
 
       console.log(res);

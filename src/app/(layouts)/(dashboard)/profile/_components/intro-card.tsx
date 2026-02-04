@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { DownloadIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { FaFacebook, FaLinkedin } from "react-icons/fa";
 import { FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { ProfileImageUploader } from "./upload-profile-iamge/profile-image-uploader";
 
 const IntroCard = () => {
   useAuth();
@@ -16,13 +16,7 @@ const IntroCard = () => {
       <Card className="border-primary rounded-4xl border-0 border-t-5 pt-4 pb-3 shadow-[0_20px_55px_rgba(15_23_42/0.1)]">
         <CardContent className="relative">
           <div className="absolute -top-20 left-[30%] mb-10 rounded-sm bg-white p-2 xl:left-5">
-            <Image
-              src="/firoj.jpg"
-              alt="Profile Picture"
-              width={120}
-              height={120}
-              className="mx-auto h-38 w-full rounded-sm object-contain"
-            />
+            <ProfileImageUploader />
           </div>
           <div className="mt-26 xl:mt-1 xl:ml-36">
             <div className="flex flex-col xl:flex-row xl:items-start">

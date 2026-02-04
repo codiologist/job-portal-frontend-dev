@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import api from "@/lib/axiosInstance";
 
+import { useAuth } from "@/context/AuthContext";
 import {
   PersonalInfoValues,
   personalInformationSchema,
@@ -18,7 +19,7 @@ import {
   Trash2,
   User,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Resolver, useFieldArray, useForm } from "react-hook-form";
 import { FaMobileAlt } from "react-icons/fa";
 import { LiaUserTieSolid } from "react-icons/lia";
@@ -54,6 +55,7 @@ const socialLinks = [
 ];
 
 const PersonalInformationForm = () => {
+  const { isAuthenticated, user } = useAuth();
   const [personalDropdownData, setPersonalDropdownData] =
     useState<TUserOptionsStrict>();
   const [showSpouseField, setShowSpouseField] = useState(false);
@@ -103,32 +105,100 @@ const PersonalInformationForm = () => {
     name: "socialLink",
   });
 
+  const profileRef = useRef<any>(null);
+
   useEffect(() => {
     const dropdownData = async (): Promise<void> => {
       const res = await api.get("/user/profile/personal/dropdown");
+      const getProfileData = await api.get("/user/me");
+
       setPersonalDropdownData(res.data.data);
+
+      const profileRes = getProfileData?.data?.data
+        ? getProfileData?.data?.data
+        : null;
+      profileRef.current = profileRes;
+      form.setValue("fullName", profileRes?.fullName || "");
+      form.setValue("emailAddress", profileRes?.email || "");
+      form.setValue("mobileNo", profileRes?.phone || "");
+
+      if (!getProfileData) return;
+
+      form.reset({
+        fullName: profileRes.fullName ?? "",
+        fatherName: profileRes?.candidatePersonal?.fatherName ?? "",
+        motherName: profileRes?.candidatePersonal?.motherName ?? "",
+        spouseName: profileRes?.candidatePersonal?.spouseName ?? "",
+        dob: profileRes?.candidatePersonal?.dob ?? undefined,
+        gender: profileRes?.candidatePersonal?.gender ?? "",
+        maritalStatus: profileRes?.candidatePersonal?.maritalStatus ?? "",
+        nationality: profileRes?.candidatePersonal?.nationality ?? "",
+        nationalId: profileRes?.candidatePersonal?.nationalId ?? "",
+        emailAddress: profileRes.email ?? "",
+        mobileNo: profileRes.phone ?? "",
+        careerTitle: profileRes?.candidatePersonal?.careerTitle ?? "",
+        careerObjective: profileRes?.candidatePersonal?.careerObjective ?? "",
+        portfolioLink: profileRes?.candidatePersonal?.portfolioLink ?? "",
+        skillIds: profileRes?.candidatePersonal?.skills
+          ? profileRes.candidatePersonal.skills.map((skill: any) =>
+              typeof skill === "string" ? skill : skill.id,
+            )
+          : [],
+        interstIds: profileRes?.candidatePersonal?.interests
+          ? profileRes.candidatePersonal.interests.map((interest: any) =>
+              typeof interest === "string" ? interest : interest.id,
+            )
+          : [],
+        socialLink: profileRes?.candidatePersonal?.socialLink
+          ? profileRes.candidatePersonal.socialLink.map((link: any) => ({
+              label: link.label,
+              url: link.url,
+            }))
+          : [],
+      });
+
+      console.log("Profile Data", profileRes?.candidatePersonal);
     };
 
     // call the async loader
     void dropdownData();
-  }, []);
+  }, [form]);
+
+  useEffect(() => {
+    const religionId = profileRef.current?.candidatePersonal?.religion?.id;
+    const bloodGroupId = profileRef.current?.candidatePersonal?.bloodGroup?.id;
+
+    if (religionId && personalDropdownData?.religion) {
+      form.setValue("religionId", religionId, {
+        shouldValidate: true,
+        shouldDirty: false,
+      });
+    }
+    if (bloodGroupId && personalDropdownData?.bloodGroup) {
+      form.setValue("bloodGroupId", bloodGroupId, {
+        shouldValidate: true,
+        shouldDirty: false,
+      });
+    }
+  }, [personalDropdownData?.religion, personalDropdownData?.bloodGroup, form]);
 
   async function onSubmit(data: PersonalInfoValues) {
     const payload = {
       ...data,
       dob: data.dob instanceof Date ? data.dob.toISOString() : data.dob,
     };
-    // try {
-    //   await api.post("/user/profile/personal", payload);
-    // } catch (error) {
-    //   console.error("Error updating personal information:", error);
-    // }
+    try {
+      const res = await api.post("/user/profile/personal", payload);
+      console.log("Profile Response", res.data);
+    } catch (error) {
+      console.error("Error updating personal information:", error);
+    }
     console.log(payload);
   }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="border-dark-blue-200 bg-dark-blue-200/10 ov space-y-10 rounded-4xl border p-6">
+        <div className="xl:border-dark-blue-200 xl:bg-dark-blue-200/10 space-y-10 rounded-4xl p-0 xl:border xl:p-6">
           <section>
             <ProfileContentCard>
               <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-2xl">
@@ -206,7 +276,6 @@ const PersonalInformationForm = () => {
                   name="alternatePhone"
                   label="Alternate Mobile Number"
                   placeholder="Enter your alternate mobile number"
-                  required
                   icon={<FaMobileAlt className="size-5.5" />}
                 />
                 <TextInput
@@ -216,6 +285,7 @@ const PersonalInformationForm = () => {
                   placeholder="Enter your email address"
                   required
                   icon={<Mail className="size-5.5" />}
+                  disabled
                 />
                 <SelectInput
                   form={form}
@@ -229,6 +299,7 @@ const PersonalInformationForm = () => {
                   ]}
                   required
                 />
+
                 <SelectInput
                   form={form}
                   name="religionId"
@@ -250,6 +321,7 @@ const PersonalInformationForm = () => {
                   }
                   required
                 />
+
                 <SelectInput
                   form={form}
                   name="bloodGroupId"
@@ -390,39 +462,54 @@ const PersonalInformationForm = () => {
                   </h1>
 
                   <div className="">
-                    {fields.map((field, index) => (
-                      <div
-                        key={field.id}
-                        className="flex w-full items-center gap-x-2"
-                      >
-                        <div>
-                          <SelectInput
-                            form={form}
-                            name={`socialLink.${index}.label`}
-                            options={socialLinks}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <TextInput
-                            form={form}
-                            name={`socialLink.${index}.url`}
-                            placeholder="Enter your social link"
-                            icon={<Link className="size-4.5" />}
-                          />
-                        </div>
+                    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                      {fields.map((field, index) => (
+                        <div
+                          key={field.id}
+                          className="flex w-full flex-col gap-x-2 xl:flex-row xl:items-center"
+                        >
+                          <div className="flex gap-2">
+                            <div className="flex-1">
+                              <SelectInput
+                                form={form}
+                                name={`socialLink.${index}.label`}
+                                options={socialLinks}
+                              />
+                            </div>
+                            {fields.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                className="mt-2 block xl:hidden"
+                                onClick={() => remove(index)}
+                              >
+                                <Trash2 />
+                              </Button>
+                            )}
+                          </div>
 
-                        {fields.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="destructive"
-                            className="mt-2"
-                            onClick={() => remove(index)}
-                          >
-                            <Trash2 />
-                          </Button>
-                        )}
-                      </div>
-                    ))}
+                          <div className="flex-1">
+                            <TextInput
+                              form={form}
+                              name={`socialLink.${index}.url`}
+                              placeholder="Enter your social link"
+                              icon={<Link className="size-4.5" />}
+                            />
+                          </div>
+
+                          {fields.length > 1 && (
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              className="mt-2 hidden xl:block"
+                              onClick={() => remove(index)}
+                            >
+                              <Trash2 />
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
 
                     <Button
                       type="button"
