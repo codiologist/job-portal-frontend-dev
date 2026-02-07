@@ -32,8 +32,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Convert file to buffer for uploading to your backend
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // const buffer = Buffer.from(bytes);
 
     // TODO: Replace this with your actual backend API call
     // Example:

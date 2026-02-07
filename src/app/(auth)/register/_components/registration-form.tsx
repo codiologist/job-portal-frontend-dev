@@ -20,7 +20,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 import { useAuth } from "@/context/AuthContext";
-import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { SignupInput, signupSchema } from "@/schemas/auth.schema";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -29,7 +28,7 @@ const RegistrationForm = () => {
   const [loading, setLoading] = useState(false);
 
   const { signup } = useAuth();
-  const { executeRecaptcha } = useRecaptcha();
+  // const { executeRecaptcha } = useRecaptcha();
 
   const form = useForm<SignupInput>({
     resolver: zodResolver(signupSchema),

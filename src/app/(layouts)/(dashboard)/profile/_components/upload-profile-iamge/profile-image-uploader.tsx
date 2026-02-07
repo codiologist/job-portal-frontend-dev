@@ -115,6 +115,7 @@ export function ProfileImageUploader({
         // Default behavior: call API endpoint
         const formData = new FormData();
         formData.append("image", data.image);
+        console.log(data.image);
 
         const response = await fetch("/api/upload", {
           method: "POST",
@@ -142,15 +143,15 @@ export function ProfileImageUploader({
   };
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative h-47.5 w-40", className)}>
       {/* Cover Image Display */}
-      <div className="bg-muted relative h-38.75 w-32.5 rounded-lg">
+      <div className="relative h-47.5 w-40 rounded-lg">
         <Image
           src={currentImage || default_image}
           alt="Profile Image"
-          width={130}
-          height={155}
-          className="border-dark-blue-100 h-full w-full rounded-sm border-2 object-cover object-top"
+          width={160}
+          height={190}
+          className="border-dark-blue-100 h-47.5 w-40 rounded-sm border-2 object-cover object-top"
         />
 
         {/* Overlay Icon - Bottom Right */}
@@ -195,9 +196,11 @@ export function ProfileImageUploader({
                           {/* Preview Area */}
                           {preview ? (
                             <div className="relative mx-auto h-auto w-50 rounded-lg">
-                              <img
+                              <Image
                                 src={preview || "/placeholder.svg"}
                                 alt="Preview"
+                                width={200}
+                                height={255}
                                 className="h-full w-full object-cover object-top"
                               />
                               <div className="px-4">

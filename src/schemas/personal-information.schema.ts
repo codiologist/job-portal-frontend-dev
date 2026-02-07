@@ -13,7 +13,7 @@ export const personalInformationSchema = z
       .min(10, "Position title must be at least 10 characters"),
     careerObjective: z
       .string()
-      .min(15, "Career objective must be at least 150 characters"),
+      .min(150, "Career objective must be at least 150 characters"),
     fullName: z.string().min(5, "First name must be at least 5 characters"),
     fatherName: z.string().min(5, "Father name must be at least 5 characters"),
     motherName: z.string().min(5, "Mother name must be at least 5 characters"),

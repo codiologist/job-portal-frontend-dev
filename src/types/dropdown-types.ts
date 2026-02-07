@@ -1,9 +1,11 @@
+/*
 type Option = {
   id: string;
   name?: string; // used in bloodGroup & religion
   skillName?: string; // used in skills
   interstName?: string; // used in interests (note: spelling preserved as in your data)
 };
+*/
 
 type BloodGroup = {
   id: string;

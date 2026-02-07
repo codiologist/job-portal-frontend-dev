@@ -11,6 +11,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   BriefcaseBusiness,
+  Edit,
   IdCard,
   Link,
   Mail,
@@ -23,6 +24,7 @@ import { useEffect, useRef, useState } from "react";
 import { Resolver, useFieldArray, useForm } from "react-hook-form";
 import { FaMobileAlt } from "react-icons/fa";
 import { LiaUserTieSolid } from "react-icons/lia";
+import { TUserOptionsStrict } from "../../../../../../types/dropdown-types";
 import ProfileContentCard from "../../../_components/profile-content-card";
 import {
   DatePickerInput,
@@ -31,7 +33,6 @@ import {
   TextInput,
 } from "../../_components/form-inputs";
 import { MultiSelectInput } from "../../_components/multi-select-input";
-import { TUserOptionsStrict } from "./dropdown-types";
 
 const socialLinks = [
   { label: "Facebook", value: "Facebook" },
@@ -55,6 +56,7 @@ const socialLinks = [
 ];
 
 const PersonalInformationForm = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isAuthenticated, user } = useAuth();
   const [personalDropdownData, setPersonalDropdownData] =
     useState<TUserOptionsStrict>();
@@ -136,6 +138,7 @@ const PersonalInformationForm = () => {
         nationalId: profileRes?.candidatePersonal?.nationalId ?? "",
         emailAddress: profileRes.email ?? "",
         mobileNo: profileRes.phone ?? "",
+        alternatePhone: profileRes?.candidatePersonal?.alternatePhone ?? "",
         careerTitle: profileRes?.candidatePersonal?.careerTitle ?? "",
         careerObjective: profileRes?.candidatePersonal?.careerObjective ?? "",
         portfolioLink: profileRes?.candidatePersonal?.portfolioLink ?? "",
@@ -196,346 +199,352 @@ const PersonalInformationForm = () => {
     console.log(payload);
   }
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="xl:border-dark-blue-200 xl:bg-dark-blue-200/10 space-y-10 rounded-4xl p-0 xl:border xl:p-6">
-          <section>
-            <ProfileContentCard>
-              <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-2xl">
-                Career Objective
-              </h1>
-              <div className="space-y-6">
-                <TextInput
-                  form={form}
-                  name="careerTitle"
-                  label="Position Title"
-                  placeholder="Enter your positon (i.e. Senior Software Engineer)"
-                  required
-                  icon={<BriefcaseBusiness />}
-                />
-                <TextAreaInput
-                  form={form}
-                  name="careerObjective"
-                  className="h-60! text-base!"
-                  label="Career Objective"
-                  placeholder="Tell us about yourself"
-                  required
-                  icon={<TextInitial />}
-                />
-              </div>
-            </ProfileContentCard>
-          </section>
-
-          <section>
-            <ProfileContentCard>
-              <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-2xl">
-                Personal Information
-              </h1>
-              <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-                <TextInput
-                  form={form}
-                  name="fullName"
-                  label="Full Name"
-                  placeholder="Enter your full name"
-                  required
-                  icon={<LiaUserTieSolid className="size-6.5" />}
-                />
-                <TextInput
-                  form={form}
-                  name="fatherName"
-                  label="Father Name"
-                  placeholder="Enter your full name"
-                  required
-                  icon={<User />}
-                />
-                <TextInput
-                  form={form}
-                  name="motherName"
-                  label="Mother Name"
-                  placeholder="Enter your full name"
-                  required
-                  icon={<User />}
-                />
-                <DatePickerInput
-                  form={form}
-                  name="dob"
-                  label="Date of Birth (DD/MM/YYYY)"
-                  placeholder="Select your date of birth"
-                  required
-                />
-                <TextInput
-                  form={form}
-                  name="mobileNo"
-                  label="Mobile Number"
-                  placeholder="Enter your mobile number"
-                  required
-                  icon={<FaMobileAlt className="size-5.5" />}
-                />
-                <TextInput
-                  form={form}
-                  name="alternatePhone"
-                  label="Alternate Mobile Number"
-                  placeholder="Enter your alternate mobile number"
-                  icon={<FaMobileAlt className="size-5.5" />}
-                />
-                <TextInput
-                  form={form}
-                  name="emailAddress"
-                  label="Email Address"
-                  placeholder="Enter your email address"
-                  required
-                  icon={<Mail className="size-5.5" />}
-                  disabled
-                />
-                <SelectInput
-                  form={form}
-                  name="gender"
-                  label="Gender"
-                  placeholder="Select Gender"
-                  options={[
-                    { label: "Male", value: "MALE" },
-                    { label: "Female", value: "FEMALE" },
-                    { label: "Other", value: "OTHER" },
-                  ]}
-                  required
-                />
-
-                <SelectInput
-                  form={form}
-                  name="religionId"
-                  label="Religion"
-                  options={
-                    Array.isArray(personalDropdownData?.religion)
-                      ? personalDropdownData.religion.map((r) => ({
-                          label: r.name,
-                          value: r.id,
-                        }))
-                      : personalDropdownData?.religion
-                        ? [
-                            {
-                              label: personalDropdownData.religion.name,
-                              value: personalDropdownData.religion.id,
-                            },
-                          ]
-                        : []
-                  }
-                  required
-                />
-
-                <SelectInput
-                  form={form}
-                  name="bloodGroupId"
-                  label="Blood Group"
-                  options={
-                    Array.isArray(personalDropdownData?.bloodGroup)
-                      ? personalDropdownData.bloodGroup.map((r) => ({
-                          label: r.name,
-                          value: r.id,
-                        }))
-                      : personalDropdownData?.bloodGroup
-                        ? [
-                            {
-                              label: personalDropdownData.bloodGroup.name,
-                              value: personalDropdownData.bloodGroup.id,
-                            },
-                          ]
-                        : []
-                  }
-                  required
-                />
-                <SelectInput
-                  form={form}
-                  name="maritalStatus"
-                  label="Marital Status"
-                  placeholder="Select marital status"
-                  options={[
-                    { label: "Unmarried", value: "UNMARRIED" },
-                    { label: "Married", value: "MARRIED" },
-                    { label: "Other", value: "OTHER" },
-                  ]}
-                  required
-                />
-                {showSpouseField && (
-                  <TextInput
-                    form={form}
-                    name="spouseName"
-                    label="Spouse's Name"
-                    placeholder="Enter your spouse's name"
-                    required={maritalStatus === "MARRIED"}
-                  />
-                )}
-
-                <TextInput
-                  form={form}
-                  name="nationality"
-                  label="Nationality"
-                  placeholder="Enter nationality"
-                  required
-                  icon={<IdCard className="size-6.5" />}
-                />
-                <TextInput
-                  form={form}
-                  name="nationalId"
-                  label="NID No."
-                  placeholder="Enter NID No."
-                  required
-                  icon={<IdCard className="size-6.5" />}
-                />
-              </div>
-            </ProfileContentCard>
-          </section>
-
-          <section className="flex flex-col gap-6 xl:flex-row">
-            <ProfileContentCard>
-              <h1 className="text-dark-blue-700 mb-2 text-lg font-bold xl:text-2xl">
-                Skills
-              </h1>
-
-              <MultiSelectInput
-                control={form.control}
-                name="skillIds"
-                required
-                placeholder="Select skills"
-                options={
-                  Array.isArray(personalDropdownData?.skills)
-                    ? personalDropdownData.skills.map((s) => ({
-                        id: s.id,
-                        label: s.skillName,
-                      }))
-                    : personalDropdownData?.skills
-                      ? [
-                          {
-                            id: personalDropdownData.skills.id,
-                            label: personalDropdownData.skills.skillName,
-                          },
-                        ]
-                      : []
-                }
-              />
-            </ProfileContentCard>
-
-            <ProfileContentCard>
-              <h1 className="text-dark-blue-700 mb-2 text-lg font-bold xl:text-2xl">
-                Interest
-              </h1>
-              <MultiSelectInput
-                control={form.control}
-                name="interstIds"
-                required
-                placeholder="Select Interest"
-                options={
-                  Array.isArray(personalDropdownData?.interests)
-                    ? personalDropdownData.interests.map((s) => ({
-                        id: s.id,
-                        label: s.interstName,
-                      }))
-                    : personalDropdownData?.interests
-                      ? [
-                          {
-                            id: personalDropdownData.interests.id,
-                            label: personalDropdownData.interests.interstName,
-                          },
-                        ]
-                      : []
-                }
-              />
-            </ProfileContentCard>
-          </section>
-
-          <section>
-            <ProfileContentCard>
-              <div className="space-y-6">
-                <div>
-                  <h1 className="text-dark-blue-700 mb-1 text-lg font-bold xl:text-xl">
-                    Portfolio Link
+    <div className="space-y-10">
+      <div className="xl:border-dark-blue-200 xl:bg-dark-blue-200/10 rounded-4xl p-0 xl:border xl:p-6">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="space-y-10">
+              <section>
+                <ProfileContentCard>
+                  <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-2xl">
+                    Career Objective
                   </h1>
-                  <TextInput
-                    form={form}
-                    name="portfolioLink"
-                    placeholder="Enter your portfolio URL"
-                    icon={<Link className="size-4.5" />}
-                  />
-                </div>
-                <div>
-                  <h1 className="text-dark-blue-700 mb-1 text-lg font-bold xl:text-xl">
-                    Social Links
-                  </h1>
-
-                  <div className="">
-                    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-                      {fields.map((field, index) => (
-                        <div
-                          key={field.id}
-                          className="flex w-full flex-col gap-x-2 xl:flex-row xl:items-center"
-                        >
-                          <div className="flex gap-2">
-                            <div className="flex-1">
-                              <SelectInput
-                                form={form}
-                                name={`socialLink.${index}.label`}
-                                options={socialLinks}
-                              />
-                            </div>
-                            {fields.length > 1 && (
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                className="mt-2 block xl:hidden"
-                                onClick={() => remove(index)}
-                              >
-                                <Trash2 />
-                              </Button>
-                            )}
-                          </div>
-
-                          <div className="flex-1">
-                            <TextInput
-                              form={form}
-                              name={`socialLink.${index}.url`}
-                              placeholder="Enter your social link"
-                              icon={<Link className="size-4.5" />}
-                            />
-                          </div>
-
-                          {fields.length > 1 && (
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              className="mt-2 hidden xl:block"
-                              onClick={() => remove(index)}
-                            >
-                              <Trash2 />
-                            </Button>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="mt-2"
-                      onClick={() => append({ label: "", url: "" })}
-                    >
-                      <Plus /> Add More Link
-                    </Button>
+                  <div className="space-y-6">
+                    <TextInput
+                      form={form}
+                      name="careerTitle"
+                      label="Position Title"
+                      placeholder="Enter your positon (i.e. Senior Software Engineer)"
+                      required
+                      icon={<BriefcaseBusiness />}
+                    />
+                    <TextAreaInput
+                      form={form}
+                      name="careerObjective"
+                      className="h-60! text-base!"
+                      label="Career Objective"
+                      placeholder="Tell us about yourself"
+                      required
+                      icon={<TextInitial />}
+                    />
                   </div>
-                </div>
-              </div>
-            </ProfileContentCard>
-          </section>
+                </ProfileContentCard>
+              </section>
 
-          <div className="mt-6 text-right">
-            <Button
-              type="submit"
-              className="rounded-sm text-base font-semibold"
-            >
-              Update
-            </Button>
-          </div>
-        </div>
-      </form>
-    </Form>
+              <section>
+                <ProfileContentCard>
+                  <h1 className="text-dark-blue-700 mb-4 text-lg font-bold xl:text-2xl">
+                    Personal Information
+                  </h1>
+                  <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                    <TextInput
+                      form={form}
+                      name="fullName"
+                      label="Full Name"
+                      placeholder="Enter your full name"
+                      required
+                      icon={<LiaUserTieSolid className="size-6.5" />}
+                    />
+                    <TextInput
+                      form={form}
+                      name="fatherName"
+                      label="Father Name"
+                      placeholder="Enter your full name"
+                      required
+                      icon={<User />}
+                    />
+                    <TextInput
+                      form={form}
+                      name="motherName"
+                      label="Mother Name"
+                      placeholder="Enter your full name"
+                      required
+                      icon={<User />}
+                    />
+                    <DatePickerInput
+                      form={form}
+                      name="dob"
+                      label="Date of Birth (DD/MM/YYYY)"
+                      placeholder="Select your date of birth"
+                      required
+                    />
+                    <TextInput
+                      form={form}
+                      name="mobileNo"
+                      label="Mobile Number"
+                      placeholder="Enter your mobile number"
+                      required
+                      icon={<FaMobileAlt className="size-5.5" />}
+                    />
+                    <TextInput
+                      form={form}
+                      name="alternatePhone"
+                      label="Alternate Mobile Number"
+                      placeholder="Enter your alternate mobile number"
+                      icon={<FaMobileAlt className="size-5.5" />}
+                    />
+                    <TextInput
+                      form={form}
+                      name="emailAddress"
+                      label="Email Address"
+                      placeholder="Enter your email address"
+                      required
+                      icon={<Mail className="size-5.5" />}
+                      disabled
+                    />
+                    <SelectInput
+                      form={form}
+                      name="gender"
+                      label="Gender"
+                      placeholder="Select Gender"
+                      options={[
+                        { label: "Male", value: "MALE" },
+                        { label: "Female", value: "FEMALE" },
+                        { label: "Other", value: "OTHER" },
+                      ]}
+                      required
+                    />
+
+                    <SelectInput
+                      form={form}
+                      name="religionId"
+                      label="Religion"
+                      options={
+                        Array.isArray(personalDropdownData?.religion)
+                          ? personalDropdownData.religion.map((r) => ({
+                              label: r.name,
+                              value: r.id,
+                            }))
+                          : personalDropdownData?.religion
+                            ? [
+                                {
+                                  label: personalDropdownData.religion.name,
+                                  value: personalDropdownData.religion.id,
+                                },
+                              ]
+                            : []
+                      }
+                      required
+                    />
+
+                    <SelectInput
+                      form={form}
+                      name="bloodGroupId"
+                      label="Blood Group"
+                      options={
+                        Array.isArray(personalDropdownData?.bloodGroup)
+                          ? personalDropdownData.bloodGroup.map((r) => ({
+                              label: r.name,
+                              value: r.id,
+                            }))
+                          : personalDropdownData?.bloodGroup
+                            ? [
+                                {
+                                  label: personalDropdownData.bloodGroup.name,
+                                  value: personalDropdownData.bloodGroup.id,
+                                },
+                              ]
+                            : []
+                      }
+                      required
+                    />
+                    <SelectInput
+                      form={form}
+                      name="maritalStatus"
+                      label="Marital Status"
+                      placeholder="Select marital status"
+                      options={[
+                        { label: "Unmarried", value: "UNMARRIED" },
+                        { label: "Married", value: "MARRIED" },
+                        { label: "Other", value: "OTHER" },
+                      ]}
+                      required
+                    />
+                    {showSpouseField && (
+                      <TextInput
+                        form={form}
+                        name="spouseName"
+                        label="Spouse's Name"
+                        placeholder="Enter your spouse's name"
+                        required={maritalStatus === "MARRIED"}
+                      />
+                    )}
+
+                    <TextInput
+                      form={form}
+                      name="nationality"
+                      label="Nationality"
+                      placeholder="Enter nationality"
+                      required
+                      icon={<IdCard className="size-6.5" />}
+                    />
+                    <TextInput
+                      form={form}
+                      name="nationalId"
+                      label="NID No."
+                      placeholder="Enter NID No."
+                      required
+                      icon={<IdCard className="size-6.5" />}
+                    />
+                  </div>
+                </ProfileContentCard>
+              </section>
+
+              <section className="flex flex-col gap-6 xl:flex-row">
+                <ProfileContentCard>
+                  <h1 className="text-dark-blue-700 mb-2 text-lg font-bold xl:text-2xl">
+                    Skills
+                  </h1>
+
+                  <MultiSelectInput
+                    control={form.control}
+                    name="skillIds"
+                    required
+                    placeholder="Select skills"
+                    options={
+                      Array.isArray(personalDropdownData?.skills)
+                        ? personalDropdownData.skills.map((s) => ({
+                            id: s.id,
+                            label: s.skillName,
+                          }))
+                        : personalDropdownData?.skills
+                          ? [
+                              {
+                                id: personalDropdownData.skills.id,
+                                label: personalDropdownData.skills.skillName,
+                              },
+                            ]
+                          : []
+                    }
+                  />
+                </ProfileContentCard>
+
+                <ProfileContentCard>
+                  <h1 className="text-dark-blue-700 mb-2 text-lg font-bold xl:text-2xl">
+                    Interest
+                  </h1>
+                  <MultiSelectInput
+                    control={form.control}
+                    name="interstIds"
+                    required
+                    placeholder="Select Interest"
+                    options={
+                      Array.isArray(personalDropdownData?.interests)
+                        ? personalDropdownData.interests.map((s) => ({
+                            id: s.id,
+                            label: s.interstName,
+                          }))
+                        : personalDropdownData?.interests
+                          ? [
+                              {
+                                id: personalDropdownData.interests.id,
+                                label:
+                                  personalDropdownData.interests.interstName,
+                              },
+                            ]
+                          : []
+                    }
+                  />
+                </ProfileContentCard>
+              </section>
+
+              <section>
+                <ProfileContentCard>
+                  <div className="space-y-6">
+                    <div>
+                      <h1 className="text-dark-blue-700 mb-1 text-lg font-bold xl:text-xl">
+                        Portfolio Link
+                      </h1>
+                      <TextInput
+                        form={form}
+                        name="portfolioLink"
+                        placeholder="Enter your portfolio URL"
+                        icon={<Link className="size-4.5" />}
+                      />
+                    </div>
+                    <div>
+                      <h1 className="text-dark-blue-700 mb-1 text-lg font-bold xl:text-xl">
+                        Social Links
+                      </h1>
+
+                      <div>
+                        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                          {fields.map((field, index) => (
+                            <div
+                              key={field.id}
+                              className="flex w-full flex-col gap-x-2 xl:flex-row xl:items-center"
+                            >
+                              <div className="flex gap-2">
+                                <div className="flex-1">
+                                  <SelectInput
+                                    form={form}
+                                    name={`socialLink.${index}.label`}
+                                    options={socialLinks}
+                                  />
+                                </div>
+                                {fields.length > 1 && (
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    className="mt-2 block xl:hidden"
+                                    onClick={() => remove(index)}
+                                  >
+                                    <Trash2 />
+                                  </Button>
+                                )}
+                              </div>
+
+                              <div className="flex-1">
+                                <TextInput
+                                  form={form}
+                                  name={`socialLink.${index}.url`}
+                                  placeholder="Enter your social link"
+                                  icon={<Link className="size-4.5" />}
+                                />
+                              </div>
+
+                              {fields.length > 1 && (
+                                <Button
+                                  type="button"
+                                  variant="destructive"
+                                  className="mt-2 hidden xl:block"
+                                  onClick={() => remove(index)}
+                                >
+                                  <Trash2 />
+                                </Button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="mt-2"
+                          onClick={() => append({ label: "", url: "" })}
+                        >
+                          <Plus /> Add More Link
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </ProfileContentCard>
+              </section>
+
+              <div className="mt-6 text-right">
+                <Button
+                  type="submit"
+                  className="rounded-sm text-base font-semibold"
+                >
+                  <Edit />
+                  Update
+                </Button>
+              </div>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 };
 

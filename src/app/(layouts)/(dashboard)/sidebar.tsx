@@ -9,8 +9,8 @@ const Sidebar = () => {
   return (
     <>
       <div className="hidden md:flex md:shrink-0">
-        <div className="flex w-80 flex-col border-r border-gray-200 text-white">
-          <div className="flex h-18 items-center justify-center border-b border-gray-200 px-4">
+        <div className="flex w-80 flex-col text-white">
+          <div className="flex h-18 items-center justify-center border-r border-b border-gray-200 px-4">
             <Link href="/" aria-label="Go to home">
               <div className="flex items-center gap-0">
                 <Image src={logo} alt="Algorify Logo" className="h-auto w-8" />

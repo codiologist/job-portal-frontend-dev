@@ -58,9 +58,6 @@ export function MultiSelectInput<T extends FieldValues>({
 }: MultiSelectInputProps<T>) {
   const [open, setOpen] = React.useState(false);
 
-  const handeleClick = () => {
-    alert("Clicked");
-  };
   return (
     <FormField
       control={control}
@@ -77,7 +74,6 @@ export function MultiSelectInput<T extends FieldValues>({
         };
 
         const removeItem = (id: string) => {
-          alert;
           field.onChange((field.value || []).filter((v: string) => v !== id));
         };
 

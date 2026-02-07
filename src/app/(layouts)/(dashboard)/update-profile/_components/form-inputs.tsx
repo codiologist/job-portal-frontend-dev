@@ -1,4 +1,3 @@
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
@@ -368,6 +367,7 @@ export const DatePickerInput = ({
   required = false,
 }: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [date, setDate] = useState<Date | null>(null);
   return (
     <FormField
